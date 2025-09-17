@@ -1,8 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
+
+  const navigate = useNavigate();
   return (
     <div className="App">
       <header className="App-header">
@@ -10,6 +13,7 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <button onClick={() => navigate('/note')}>Note</button>
         <a
           className="App-link"
           href="https://reactjs.org"
