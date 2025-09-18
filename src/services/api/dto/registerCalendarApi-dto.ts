@@ -8,20 +8,9 @@ interface RegisterCalendar {
     status: "recruiting" | "matched" | "closed" | null;
 }
 
-interface Shop {
-    name: string;
-    address: string;
-}
-
 interface RegisterCalendarResponse {
-    hobbyId: string;
-    userId: string;
-    date: string;
-    timeSlot: "morning" | "afternoon" | "evening";
-    intensity: "serious" | "casual";
-    attendees: number;
+    calendarId: string;
     status: "recruiting" | "matched" | "closed" | null;
-    shops: Shop[];
 }
 
 

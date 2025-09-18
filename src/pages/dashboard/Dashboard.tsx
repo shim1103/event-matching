@@ -4,18 +4,24 @@ import Calendar from '../../components/calendar/Calendar';
 import { getCalendarList } from '../../services/api/client';
 import { CalendarItem } from '../../services/api/dto/getCalendarListApi-dto';
 import userCalendarsData from '../../dummydata/user_calendars.json';
-import Layout from '../../components/common/Layout';
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [userCalendars, setUserCalendars] = useState<CalendarItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
-  let currentUserId = localStorage.getItem('userId');
-  if (!currentUserId) {
-    navigate('/');
-  }
-  currentUserId = currentUserId || '1';
+  console.log('Dashboard currentUserId', currentUserId);
+
+
+  useEffect(() => {
+    const currentUserId = localStorage.getItem('userId');
+    setCurrentUserId(currentUserId || '');
+    if (!currentUserId) {
+      navigate('/');
+    }
+  }, []);
 
   useEffect(() => {
     // APIからユーザーの予定を取得
@@ -54,7 +60,9 @@ const Dashboard: React.FC = () => {
       }
     };
 
+    if(currentUserId) {
     fetchUserCalendars();
+    }
   }, [currentUserId]);
 
   const handleDateSelect = (date: Date) => {
@@ -100,29 +108,31 @@ const Dashboard: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 p-4">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-          <div className="text-center">読み込み中...</div>
-        </div>
-      </div>
-    );
+    return <LoadingScreen show={true} message="読み込み中..." />;
   }
 
   return (
-    <Layout>
-      <div className="min-h-screen bg-gray-50 p-4">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-          <div className="mb-6">
-            <h2 className="text-lg font-semibold mb-4">カレンダー</h2>
-            <Calendar
-              onDateSelect={handleDateSelect}
-              userCalendars={userCalendars}
-            />
+    <div className="min-h-screen p-4" style={{ background: 'linear-gradient(135deg, #fef7ed 0%, #f8fafc 100%)' }}>
+      <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6 border-2" style={{ borderColor: '#f59e0b' }}>
+        <div className="mb-6">
+          <div className="flex items-center space-x-3 mb-6">
+            <div 
+              className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+              style={{ 
+                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+              }}
+            >
+              <span className="text-white font-bold text-sm">📅</span>
+            </div>
+            <h2 className="text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">カレンダー</h2>
           </div>
+          <Calendar
+            onDateSelect={handleDateSelect}
+            userCalendars={userCalendars}
+          />
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

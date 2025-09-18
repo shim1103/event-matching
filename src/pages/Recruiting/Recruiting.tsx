@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import Layout from '../../components/common/Layout';
 import Button from '../../components/common/Button';
 import MatchingStatus from '../../components/recruiting/MatchingStatus';
 import ParticipantCounter from '../../components/recruiting/ParticipantCounter';
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 import { getCalendarDetail, getHobbyList } from '../../services/api/client';
 import { CalendarDetailResponse } from '../../services/api/dto/getCalendarDetailApi-dto';
 import { Hobby } from '../../services/api/dto/getHobbyListApi-dto';
@@ -29,14 +29,8 @@ interface MatchingState {
 const Recruiting: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // 固定のユーザーID
-  let userId = localStorage.getItem('userId');
-  if (!userId) {
-    navigate('/');
-  }
-  userId = userId || '1';
-  
+
+  const [userId, setUserId] = useState<string | null>(null);
   // 状態管理
   const [eventData, setEventData] = useState<EventData | null>(null);
   const [hobbies, setHobbies] = useState<Hobby[]>([]);
@@ -46,6 +40,14 @@ const Recruiting: React.FC = () => {
   // URLパラメータからカレンダーIDを取得
   const searchParams = new URLSearchParams(location.search);
   const calendarId = searchParams.get('calendarId');
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    setUserId(userId || '');
+    if (!userId) {
+      navigate('/');
+    }
+  }, []);
 
   // 趣味一覧を取得
   useEffect(() => {
@@ -81,7 +83,7 @@ const Recruiting: React.FC = () => {
         setLoading(true);
         setError(null);
         
-        const calendarDetail = await getCalendarDetail(userId, calendarId);
+        const calendarDetail = await getCalendarDetail(userId || '1', calendarId);
         console.log('calendarDetail', calendarDetail);
         
         // カレンダー詳細データをeventDataとして設定
@@ -131,7 +133,9 @@ const Recruiting: React.FC = () => {
       }
     };
 
-    fetchCalendarDetail();
+    if(userId) {
+      fetchCalendarDetail();
+    }
   }, [calendarId, userId, hobbies]);
 
   // アクティビティ名を取得する関数
@@ -223,51 +227,38 @@ const Recruiting: React.FC = () => {
 
   // ローディング状態
   if (loading) {
-    return (
-      <Layout>
-        <div className="max-w-md mx-auto p-4">
-          <div className="text-center py-8">
-            <div className="text-lg">読み込み中...</div>
-          </div>
-        </div>
-      </Layout>
-    );
+    return <LoadingScreen show={true} message="読み込み中..." />;
   }
 
   // エラー状態
   if (error) {
     return (
-      <Layout>
-        <div className="max-w-md mx-auto p-4">
-          <div className="text-center py-8">
-            <div className="text-red-500 mb-4">{error}</div>
-            <Button onClick={() => navigate('/dashboard')} variant="primary">
-              ダッシュボードに戻る
-            </Button>
-          </div>
+      <div className="max-w-md mx-auto p-4">
+        <div className="text-center py-8">
+          <div className="text-red-500 mb-4">{error}</div>
+          <Button onClick={() => navigate('/dashboard')} variant="primary">
+            ダッシュボードに戻る
+          </Button>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   // データが取得できない場合
   if (!eventData) {
     return (
-      <Layout>
-        <div className="max-w-md mx-auto p-4">
-          <div className="text-center py-8">
-            <div className="text-gray-500 mb-4">イベントデータが見つかりません</div>
-            <Button onClick={() => navigate('/dashboard')} variant="primary">
-              ダッシュボードに戻る
-            </Button>
-          </div>
+      <div className="max-w-md mx-auto p-4">
+        <div className="text-center py-8">
+          <div className="text-gray-500 mb-4">イベントデータが見つかりません</div>
+          <Button onClick={() => navigate('/dashboard')} variant="primary">
+            ダッシュボードに戻る
+          </Button>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   return (
-    <Layout>
       <div className="min-h-screen bg-gray-50 p-2">
         <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md p-4">
           <div className="mb-4">
@@ -352,7 +343,6 @@ const Recruiting: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
   );
 };
 

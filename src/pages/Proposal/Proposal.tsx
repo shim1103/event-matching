@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
-import Layout from '../../components/common/Layout';
 import Button from '../../components/common/Button';
 import EventSummary from '../../components/event/EventSummary';
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 import venuesData from '../../dummydata/venues.json';
 import groupsData from '../../dummydata/groups.json';
 import userCalendarsData from '../../dummydata/user_calendars.json';
@@ -13,15 +13,9 @@ import { getCalendarDetail } from '../../services/api/client';
 const Proposal: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  // 固定のユーザーID
-  let userId = localStorage.getItem('userId');
-  if (!userId) {
-    navigate('/');
-  }
-  userId = userId || '1';
-  
+
   // 状態管理
+  const [userId, setUserId] = useState<string | null>(null);
   const [eventData, setEventData] = useState<any>(null);
   const [matchingResult, setMatchingResult] = useState<any>(null);
   const [allVenues, setAllVenues] = useState<any[]>([]);
@@ -32,6 +26,14 @@ const Proposal: React.FC = () => {
   // URLパラメータからカレンダーIDを取得
   const searchParams = new URLSearchParams(location.search);
   const calendarId = searchParams.get('calendarId');
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    setUserId(userId || '');
+    if (!userId) {
+      navigate('/');
+    }
+  }, []);
 
   // カレンダー詳細情報を取得
   useEffect(() => {
@@ -45,11 +47,11 @@ const Proposal: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         console.log('Proposal calendarId', calendarId);
-        const calendarDetail = await getCalendarDetail(userId, calendarId);
+        const calendarDetail = await getCalendarDetail(userId || '', calendarId);
         console.log('Proposal calendarDetail', calendarDetail);
-        
+
         // カレンダー詳細データをeventDataとして設定
         setEventData({
           userId: calendarDetail.userId,
@@ -75,11 +77,11 @@ const Proposal: React.FC = () => {
 
       } catch (err) {
         console.error('カレンダー詳細の取得に失敗しました:', err);
-        
+
         // エラーの場合はダミーデータを使用
         const dummyCalendar = userCalendarsData.find(cal => cal.id.toString() === calendarId);
         const dummyGroup = groupsData.find(group => group.id === dummyCalendar?.group_id);
-        
+
         if (dummyCalendar && dummyGroup) {
           // ダミーデータからeventDataを設定
           setEventData({
@@ -114,7 +116,9 @@ const Proposal: React.FC = () => {
       }
     };
 
-    fetchCalendarDetail();
+    if(userId) {
+      fetchCalendarDetail();
+    }
   }, [calendarId, userId]);
 
   // 日付フォーマット関数
@@ -150,58 +154,54 @@ const Proposal: React.FC = () => {
 
   // ローディング状態
   if (loading) {
-    return (
-      <Layout>
-        <div className="max-w-md mx-auto p-4">
-          <div className="text-center py-8">
-            <div className="text-lg">読み込み中...</div>
-          </div>
-        </div>
-      </Layout>
-    );
+    return <LoadingScreen show={true} message="読み込み中..." />;
   }
 
   // エラー状態
   if (error) {
     return (
-      <Layout>
-        <div className="max-w-md mx-auto p-4">
-          <div className="text-center py-8">
-            <div className="text-red-500 mb-4">{error}</div>
-            <Button onClick={() => navigate('/dashboard')} variant="primary">
-              ダッシュボードに戻る
-            </Button>
-          </div>
+      <div className="max-w-md mx-auto p-4">
+        <div className="text-center py-8">
+          <div className="text-red-500 mb-4">{error}</div>
+          <Button onClick={() => navigate('/dashboard')} variant="primary">
+            ダッシュボードに戻る
+          </Button>
         </div>
-      </Layout>
+      </div>
     );
   }
 
   // データが取得できない場合
   if (!eventData) {
     return (
-      <Layout>
-        <div className="max-w-md mx-auto p-4">
-          <div className="text-center py-8">
-            <div className="text-gray-500 mb-4">イベントデータが見つかりません</div>
-            <Button onClick={() => navigate('/dashboard')} variant="primary">
-              ダッシュボードに戻る
-            </Button>
-          </div>
+      <div className="max-w-md mx-auto p-4">
+        <div className="text-center py-8">
+          <div className="text-gray-500 mb-4">イベントデータが見つかりません</div>
+          <Button onClick={() => navigate('/dashboard')} variant="primary">
+            ダッシュボードに戻る
+          </Button>
         </div>
-      </Layout>
+      </div>
     );
   }
-  
-  
+
   return (
-    <Layout>
-      <div className="min-h-screen bg-gray-50 p-2">
-        <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md p-4">
+      <div className="min-h-screen p-2" style={{ background: 'linear-gradient(135deg, #fef7ed 0%, #f8fafc 100%)' }}>
+        <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-4 border-2" style={{ borderColor: '#f59e0b' }}>
           <div className="mb-4">
-            <h2 className="text-base font-semibold mb-3">アプリからの提案</h2>
-            <p className="text-xs text-gray-500 mb-3">
-              あなたにぴったりの場所を見つけました！
+            <div className="flex items-center space-x-3 mb-4">
+              <div 
+                className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+                style={{ 
+                  background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+                }}
+              >
+                <span className="text-white font-bold text-sm">💡</span>
+              </div>
+              <h2 className="text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">アプリからの提案</h2>
+            </div>
+            <p className="text-sm text-gray-600 mb-4 px-2 py-1 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200">
+              ✨ あなたにぴったりの場所を見つけました！
             </p>
 
             <form className="space-y-3">
@@ -259,29 +259,37 @@ const Proposal: React.FC = () => {
                 >
                   参加する
                 </button> */}
-                
+
                 <button
                   type="button"
                   onClick={() => navigate('/dashboard')}
-                  className="w-full bg-gray-300 text-gray-700 py-2 rounded-lg font-semibold text-xs hover:bg-gray-400 transition-colors"
+                  className="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
                 >
                   戻る
                 </button>
               </div>
 
               {/* 注意事項 */}
-              <div className="bg-gray-50 rounded-lg p-2">
-                <div className="text-xs text-gray-600 space-y-1">
-                  <p>・参加確定後のキャンセルはできません</p>
-                  <p>・場所の予約は各自で行ってください</p>
-                  <p>・当日の連絡先は後日お知らせします</p>
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-3 border border-amber-200">
+                <div className="text-xs text-amber-800 space-y-1">
+                  <p className="flex items-center space-x-1">
+                    <span>⚠️</span>
+                    <span>参加確定後のキャンセルはできません</span>
+                  </p>
+                  <p className="flex items-center space-x-1">
+                    <span>📍</span>
+                    <span>場所の予約は各自で行ってください</span>
+                  </p>
+                  <p className="flex items-center space-x-1">
+                    <span>📞</span>
+                    <span>当日の連絡先は後日お知らせします</span>
+                  </p>
                 </div>
               </div>
             </form>
           </div>
         </div>
       </div>
-    </Layout>
   );
 };
 

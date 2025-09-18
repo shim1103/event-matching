@@ -60,30 +60,36 @@ const Calendar: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendar
     <div className="calendar-container">
       <style>{`
         .calendar-yellow {
-          background-color: #eab308 !important;
+          background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
           color: white !important;
+          box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3) !important;
         }
         .calendar-green {
-          background-color: #22c55e !important;
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
           color: white !important;
+          box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3) !important;
         }
         .calendar-gray {
-          background-color: #6b7280 !important;
+          background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
           color: white !important;
+          box-shadow: 0 2px 4px rgba(107, 114, 128, 0.3) !important;
         }
         .calendar-blue {
-          background-color: #3b82f6 !important;
+          background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
           color: white !important;
+          box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3) !important;
         }
         
         /* 日曜日から始まるカレンダーのスタイル */
         .react-calendar {
           width: 100%;
           max-width: 100%;
-          background: white;
-          border: 1px solid #a0a096;
+          background: linear-gradient(135deg, #ffffff 0%, #fef7ed 100%);
+          border: 2px solid #f59e0b;
+          border-radius: 12px;
           font-family: Arial, Helvetica, sans-serif;
           line-height: 1.125em;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .react-calendar__month-view__weekdays {
@@ -118,31 +124,37 @@ const Calendar: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendar
         }
         
         .react-calendar__tile--now {
-          background: #ffff76;
+          background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+          color: #1e40af;
+          font-weight: bold;
+          border: 2px solid #3b82f6;
         }
         
         .react-calendar__tile--now:enabled:hover,
         .react-calendar__tile--now:enabled:focus {
-          background: #ffffa9;
+          background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+          border-color: #2563eb;
         }
         
         .react-calendar__tile--hasActive {
-          background: #76baff;
+          background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
         }
         
         .react-calendar__tile--hasActive:enabled:hover,
         .react-calendar__tile--hasActive:enabled:focus {
-          background: #a9d4ff;
+          background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
         }
         
         .react-calendar__tile--active {
-          background: #006edc;
+          background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
           color: white;
+          font-weight: bold;
+          box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
         }
         
         .react-calendar__tile--active:enabled:hover,
         .react-calendar__tile--active:enabled:focus {
-          background: #1087ff;
+          background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
         }
       `}</style>
       <ReactCalendar // ←react-calendarのコンポーネント名を変更
@@ -164,18 +176,14 @@ const Calendar: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendar
       />
       <div className="mt-4 text-center text-gray-600">
         <p>選択された日付: {value.toLocaleDateString('ja-JP')}</p>
-        <div className="mt-2 flex items-center justify-center space-x-3 text-sm">
-          <div className="flex items-center space-x-1">
-            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <span>募集中</span>
+        <div className="mt-4 flex items-center justify-center space-x-4 text-sm">
+          <div className="flex items-center space-x-2 px-3 py-1 bg-gradient-to-r from-amber-50 to-orange-50 rounded-full border border-amber-200">
+            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 shadow-sm"></div>
+            <span className="text-amber-700 font-medium">募集中</span>
           </div>
-          <div className="flex items-center space-x-1">
-            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>マッチング済み</span>
-          </div>
-          <div className="flex items-center space-x-1">
-            <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
-            <span>終了・キャンセル</span>
+          <div className="flex items-center space-x-2 px-3 py-1 bg-gradient-to-r from-emerald-50 to-green-50 rounded-full border border-emerald-200">
+            <div className="w-3 h-3 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 shadow-sm"></div>
+            <span className="text-emerald-700 font-medium">マッチング済み</span>
           </div>
         </div>
       </div>

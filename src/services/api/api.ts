@@ -12,7 +12,7 @@ export const apiCall = async <T>(
     console.log('body', body);
 
     try {
-        console.log('url', url);
+        console.log('api.tsurl', url);
         const response = await fetch(url, {
             method,
             headers: {
