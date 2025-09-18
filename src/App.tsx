@@ -13,7 +13,7 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <button onClick={() => navigate('/note')}>Note</button>
+        <button onClick={() => navigate('/dashboard')}>Dashboard</button>
         <a
           className="App-link"
           href="https://reactjs.org"

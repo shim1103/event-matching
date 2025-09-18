@@ -13,9 +13,9 @@
   },
   {
     "id": 3,
-    "name": "カラオケ",
-    "max_capacity": 8,
-    "min_capacity": 2
+    "name": "サッカー",
+    "max_capacity": 22,
+    "min_capacity": 10
   },
   {
     "id": 4,

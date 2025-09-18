@@ -5,8 +5,8 @@ import { ja } from 'date-fns/locale';
 import Layout from '../../components/common/Layout';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
-import MatchingStatus from '../../components/matching/MatchingStatus';
-import ParticipantCounter from '../../components/matching/ParticipantCounter';
+import MatchingStatus from '../../components/recruiting/MatchingStatus';
+import ParticipantCounter from '../../components/recruiting/ParticipantCounter';
 import { COLORS } from '../../utils/constants';
 
 // 型定義をファイル内に移動
@@ -28,7 +28,7 @@ interface MatchingState {
 // import { useQuery, useQueryClient } from '@tanstack/react-query';
 // import { getMatchingStatus } from '../../services/api/events';
 
-const Matching: React.FC = () => {
+const Recruiting: React.FC = () => {
   const navigate = useNavigate();
   
   // デモ用のサンプルイベントデータ（他の画面から独立）
@@ -259,4 +259,4 @@ const Matching: React.FC = () => {
   );
 };
 
-export default Matching;
+export default Recruiting;
