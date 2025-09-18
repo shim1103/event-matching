@@ -4,6 +4,7 @@ import { RegisterCalendar, RegisterCalendarResponse } from './dto/registerCalend
 import {  CalendarListResponse } from './dto/getCalendarListApi-dto';
 import { CalendarDetailResponse } from './dto/getCalendarDetailApi-dto';
 import { HobbyListResponse } from './dto/getHobbyListApi-dto';
+import { RegisterUserRequest, RegisterUserResponse } from './dto/registerUserApi-dto';
 
 // エンドポイント定義
 const ENDPOINTS = {
@@ -18,6 +19,12 @@ const ENDPOINTS = {
     HOBBIES: {
         // 7.趣味一覧を取得
         GET_HOBBY_LIST: '/hobbies',
+    },
+    USERS: {
+        // emailアドレスからユーザーIDを取得
+        GET_USER_BY_EMAIL: '/users/email',
+        // ユーザー登録 or 既存ユーザー返却
+        REGISTER_USER: '/users',
     },
 } as const;
 
@@ -58,5 +65,15 @@ export const getHobbyList = async (): Promise<HobbyListResponse> => {
         'GET',
         undefined,
         BASE_URL.HOBBY_LIST
+    );
+};
+
+// ユーザー登録 or 既存ユーザー返却
+export const registerUser = async (userData: RegisterUserRequest): Promise<RegisterUserResponse> => {
+    return apiCall<RegisterUserResponse>(
+        ENDPOINTS.USERS.REGISTER_USER,
+        'POST',
+        userData,
+        BASE_URL.REGISTER_USER
     );
 };

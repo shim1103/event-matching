@@ -1,39 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { withAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css'; // スタイルシートをインポート
-import { fetchUserAttributes } from 'aws-amplify/auth';
+import '@aws-amplify/ui-react/styles.css';
+import { UserProvider, useUser } from './contexts/UserContext';
 import logo from './logo.svg';
 import './App.css';
 import { useNavigate } from 'react-router-dom';
 
-// withAuthenticatorにはsignOut関数とuser情報が渡される
-function App({ signOut, user }: { signOut?: () => void; user?: any }) {
+// 内部コンポーネント（UserProviderの中で使用）
+const AppContent: React.FC = () => {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState<string>('');
-  const [loading, setLoading] = useState(true);
+  const { userId, userEmail, loading, error } = useUser();
 
-  useEffect(() => {
-    const getUserAttributes = async () => {
-      try {
-        setLoading(true);
-        // AWS Amplify v6の新しいAPIを使用
-        const attributes = await fetchUserAttributes();
-        
-        if (attributes.email) {
-          setUserEmail(attributes.email);
-        }
-      } catch (error) {
-        console.error('Error fetching user attributes:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getUserAttributes();
-  }, []);
-
-  // ユーザー名とemailを表示用に取得
-  const displayName = user?.username || userEmail.split('@')[0] || 'ユーザー';
+  const displayName = userEmail?.split('@')[0] || 'ユーザー';
   const displayEmail = userEmail;
 
   return (
@@ -49,10 +27,21 @@ function App({ signOut, user }: { signOut?: () => void; user?: any }) {
         
         <p>ログインに成功しました。</p>
         
+        {/* 登録状況表示 */}
+        {error ? (
+          <p style={{ color: '#dc3545', fontSize: '14px', margin: '10px 0' }}>
+            {error}
+          </p>
+        ) : userId ? (
+          <p style={{ color: '#28a745', fontSize: '14px', margin: '10px 0' }}>
+            ユーザーID: {userId} で登録/取得されました
+          </p>
+        ) : null}
+        
         <div style={{ margin: '20px 0' }}>
           <button 
             onClick={() => {
-              console.log('ダッシュボードに遷移します。現在のEmail:', userEmail);
+              console.log('ダッシュボードに遷移します。UserID:', userId, 'Email:', userEmail);
               navigate('/dashboard');
             }}
             style={{ 
@@ -69,7 +58,7 @@ function App({ signOut, user }: { signOut?: () => void; user?: any }) {
           </button>
           
           <button 
-            onClick={signOut}
+            onClick={() => {/* signOut will be passed from parent */}}
             style={{ 
               margin: '10px', 
               padding: '10px 20px', 
@@ -95,7 +84,15 @@ function App({ signOut, user }: { signOut?: () => void; user?: any }) {
       </header>
     </div>
   );
+};
+
+// メインのAppコンポーネント
+function App({ signOut, user }: { signOut?: () => void; user?: any }) {
+  return (
+    <UserProvider user={user}>
+      <AppContent />
+    </UserProvider>
+  );
 }
 
-// AppコンポーネントをwithAuthenticatorでラップする
 export default withAuthenticator(App);
