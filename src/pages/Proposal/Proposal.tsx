@@ -137,22 +137,6 @@ const Proposal: React.FC = () => {
     setSelectedVenue(venue);
   };
 
-  // // 参加ハンドラー
-  // const handleParticipate = () => {
-  //   if (selectedVenue) {
-  //     // 参加処理を実装
-  //     console.log('参加確定:', selectedVenue);
-  //     // ここでAPIを呼び出して参加を確定
-  //   }
-  // };
-
-  // // 辞退ハンドラー
-  // const handleDecline = () => {
-  //   // 辞退処理を実装
-  //   console.log('辞退');
-  //   navigate('/dashboard');
-  // };
-
   // ローディング状態
   if (loading) {
     return <LoadingScreen show={true} message="読み込み中..." />;
@@ -187,21 +171,21 @@ const Proposal: React.FC = () => {
   }
 
   return (
-      <div className="min-h-screen p-2" style={{ background: 'linear-gradient(135deg, #fef7ed 0%, #f8fafc 100%)' }}>
-        <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-4 border-2" style={{ borderColor: '#f59e0b' }}>
+      <div className="min-h-screen p-2">
+        <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-4 border-2" style={{ borderColor: '#ef4444' }}>
           <div className="mb-4">
             <div className="flex items-center space-x-3 mb-4">
               <div 
                 className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
                 style={{ 
-                  background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
                 }}
               >
                 <span className="text-white font-bold text-sm">💡</span>
               </div>
               <h2 className="text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">アプリからの提案</h2>
             </div>
-            <p className="text-sm text-gray-600 mb-4 px-2 py-1 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-200">
+            <p className="text-sm text-gray-600 mb-4 px-2 py-1 bg-gradient-to-r from-red-50 to-red-100 rounded-lg border border-red-200">
               ✨ あなたにぴったりの場所を見つけました！
             </p>
 
@@ -271,8 +255,8 @@ const Proposal: React.FC = () => {
               </div>
 
               {/* 注意事項 */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-3 border border-amber-200">
-                <div className="text-xs text-amber-800 space-y-1">
+              <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-3 border border-red-200">
+                <div className="text-xs text-red-800 space-y-1">
                   <p className="flex items-center space-x-1">
                     <span>⚠️</span>
                     <span>参加確定後のキャンセルはできません</span>

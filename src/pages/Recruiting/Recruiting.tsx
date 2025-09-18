@@ -250,10 +250,20 @@ const Recruiting: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-2">
-      <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md p-4">
+    <div className="min-h-screen p-2">
+      <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-4 border-2" style={{ borderColor: '#ef4444' }}>
         <div className="mb-4">
-          <h2 className="text-base font-semibold mb-3">マッチング中</h2>
+          <div className="flex items-center space-x-3 mb-4">
+            <div 
+              className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+              style={{ 
+                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+              }}
+            >
+              <span className="text-white font-bold text-sm">🔍</span>
+            </div>
+            <h2 className="text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">マッチング中</h2>
+          </div>
 
           {/* マッチング状況表示 */}
           <div className="space-y-3">
@@ -311,7 +321,7 @@ const Recruiting: React.FC = () => {
             <div className="space-y-2">
               <button
                 onClick={() => navigate('/dashboard')}
-                className="w-full bg-gray-300 text-gray-700 py-2 rounded-lg font-semibold text-xs hover:bg-gray-400 transition-colors"
+                className="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
               >
                 戻る
               </button>

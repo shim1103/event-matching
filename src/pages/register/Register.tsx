@@ -133,14 +133,14 @@ const Register: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-2" style={{ background: 'linear-gradient(135deg, #fef7ed 0%, #f8fafc 100%)' }}>
-      <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-4 border-2" style={{ borderColor: '#f59e0b' }}>
+    <div className="min-h-screen p-2">
+      <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-4 border-2" style={{ borderColor: '#ef4444' }}>
         <div className="mb-4">
           <div className="flex items-center space-x-3 mb-4">
             <div 
               className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
               style={{ 
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
               }}
             >
               <span className="text-white font-bold text-sm">📝</span>
@@ -151,11 +151,11 @@ const Register: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-3">
             {/* 日付表示 */}
             <div>
-              <div className="border-2 rounded-xl p-3 text-center bg-gradient-to-r from-amber-100 to-orange-100 border-amber-300 shadow-md">
-                <div className="font-bold text-xl text-amber-700">
+              <div className="border-2 rounded-xl p-3 text-center bg-gradient-to-r from-red-100 to-red-50 border-red-300 shadow-md">
+                <div className="font-bold text-xl text-red-700">
                   {selectedDate ? new Date(selectedDate).getDate() : ''}
                 </div>
-                <div className="text-sm text-amber-600 font-medium">
+                <div className="text-sm text-red-600 font-medium">
                   {formatDate(selectedDate)}
                 </div>
               </div>
@@ -183,8 +183,8 @@ const Register: React.FC = () => {
                       type="button"
                       onClick={() => setSelectedHobby(hobby.hobbyId)}
                       className={`p-2 border-2 rounded-xl text-center transition-all duration-200 text-xs font-medium ${selectedHobby === hobby.hobbyId
-                        ? 'border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 shadow-md'
-                        : 'border-gray-300 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50'
+                        ? 'border-red-500 bg-gradient-to-r from-red-50 to-red-100 text-red-700 shadow-md'
+                        : 'border-gray-300 bg-white text-gray-700 hover:border-red-300 hover:bg-red-50'
                         }`}
                     >
                       {hobby.name}
@@ -202,8 +202,8 @@ const Register: React.FC = () => {
                   type="button"
                   onClick={() => setTimeSlot('morning')}
                   className={`p-2 border-2 rounded-xl text-center transition-all duration-200 text-xs font-medium ${timeSlot === 'morning'
-                    ? 'border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 shadow-md'
-                    : 'border-gray-300 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50'
+                    ? 'border-red-500 bg-gradient-to-r from-red-50 to-red-100 text-red-700 shadow-md'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-red-300 hover:bg-red-50'
                     }`}
                 >
                   午前
@@ -212,8 +212,8 @@ const Register: React.FC = () => {
                   type="button"
                   onClick={() => setTimeSlot('afternoon')}
                   className={`p-2 border-2 rounded-xl text-center transition-all duration-200 text-xs font-medium ${timeSlot === 'afternoon'
-                    ? 'border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 shadow-md'
-                    : 'border-gray-300 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50'
+                    ? 'border-red-500 bg-gradient-to-r from-red-50 to-red-100 text-red-700 shadow-md'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-red-300 hover:bg-red-50'
                     }`}
                 >
                   午後
@@ -222,8 +222,8 @@ const Register: React.FC = () => {
                   type="button"
                   onClick={() => setTimeSlot('evening')}
                   className={`p-2 border-2 rounded-xl text-center transition-all duration-200 text-xs font-medium ${timeSlot === 'evening'
-                    ? 'border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 shadow-md'
-                    : 'border-gray-300 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50'
+                    ? 'border-red-500 bg-gradient-to-r from-red-50 to-red-100 text-red-700 shadow-md'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-red-300 hover:bg-red-50'
                     }`}
                 >
                   夜
@@ -239,8 +239,8 @@ const Register: React.FC = () => {
                   type="button"
                   onClick={() => setIntensity('casual')}
                   className={`p-2 border-2 rounded-xl text-center transition-all duration-200 text-xs font-medium ${intensity === 'casual'
-                    ? 'border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 shadow-md'
-                    : 'border-gray-300 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50'
+                    ? 'border-red-500 bg-gradient-to-r from-red-50 to-red-100 text-red-700 shadow-md'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-red-300 hover:bg-red-50'
                     }`}
                 >
                   エンジョイ
@@ -249,8 +249,8 @@ const Register: React.FC = () => {
                   type="button"
                   onClick={() => setIntensity('serious')}
                   className={`p-2 border-2 rounded-xl text-center transition-all duration-200 text-xs font-medium ${intensity === 'serious'
-                    ? 'border-amber-500 bg-gradient-to-r from-amber-50 to-orange-50 text-amber-700 shadow-md'
-                    : 'border-gray-300 bg-white text-gray-700 hover:border-amber-300 hover:bg-amber-50'
+                    ? 'border-red-500 bg-gradient-to-r from-red-50 to-red-100 text-red-700 shadow-md'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-red-300 hover:bg-red-50'
                     }`}
                 >
                   ガチ
@@ -286,7 +286,7 @@ const Register: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:transform-none"
               >
                 {loading ? '登録中...' : 'カレンダーを登録'}
               </button>
