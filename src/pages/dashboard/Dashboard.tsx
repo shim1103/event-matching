@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen p-4" style={{ background: 'linear-gradient(135deg, #fef7ed 0%, #f8fafc 100%)' }}>
+    <div className="min-h-screen p-4">
       <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6 border-2" style={{ borderColor: '#ef4444' }}>
         <div className="mb-6">
           <div className="flex items-center space-x-3 mb-6">

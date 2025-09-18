@@ -11,8 +11,7 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick, onLogoutClick }) => {
     <header 
       className="flex items-center justify-between px-6 py-4 shadow-lg border-b-2"
       style={{ 
-        borderBottomColor: COLORS.PRIMARY,
-        background: 'linear-gradient(135deg, #ffffff 0%, #fef7ed 50%, #f8fafc 100%)'
+        borderBottomColor: COLORS.PRIMARY
       }}
     >
       {/* ロゴセクション */}
