@@ -12,7 +12,6 @@ import venuesData from '../../dummydata/venues.json';
 import groupsData from '../../dummydata/groups.json';
 import userCalendarsData from '../../dummydata/user_calendars.json';
 import { getCalendarDetail } from '../../services/api/client';
-import { CalendarDetailResponse } from '../../services/api/dto/getCalenderDetailApi-dto';
 
 const Proposal: React.FC = () => {
   const location = useLocation();

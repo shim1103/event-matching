@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import Layout from '../../components/common/Layout';
@@ -8,13 +8,15 @@ import Button from '../../components/common/Button';
 import MatchingStatus from '../../components/recruiting/MatchingStatus';
 import ParticipantCounter from '../../components/recruiting/ParticipantCounter';
 import { COLORS } from '../../utils/constants';
+import { getCalendarDetail, getHobbyList } from '../../services/api/client';
+import { CalendarDetailResponse } from '../../services/api/dto/getCalenderDetailApi-dto';
+import { Hobby } from '../../services/api/dto/getHobbyListApi-dto';
+import userCalendarsData from '../../dummydata/user_calendars.json';
+import groupsData from '../../dummydata/groups.json';
 
 // 型定義をファイル内に移動
-interface EventData {
-  date: string;
-  activity: 'ボードゲーム' | 'バレーボール' | 'カラオケ' | '映画鑑賞';
-  intensity: 'エンジョイ' | 'ガチ';
-  totalCapacity: '4-6人' | '8-12人';
+interface EventData extends CalendarDetailResponse {
+  // UI表示用の追加プロパティ（削除）
 }
 
 interface MatchingState {
@@ -30,33 +32,101 @@ interface MatchingState {
 
 const Recruiting: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   
-  // デモ用のサンプルイベントデータ（他の画面から独立）
-  const [eventData] = useState<EventData>({
-    date: new Date().toISOString().split('T')[0],
-    activity: 'ボードゲーム',
-    intensity: 'エンジョイ',
-    totalCapacity: '4-6人'
-  });
+  // 固定のユーザーID
+  const userId = "1";
+  
+  // 状態管理
+  const [eventData, setEventData] = useState<EventData | null>(null);
+  const [hobbies, setHobbies] = useState<Hobby[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // ===== API版 (将来実装) =====
-  // const eventId = 1; // 実際のeventId
-  // const queryClient = useQueryClient();
-  //
-  // const { data: matchingData, isLoading, error } = useQuery({
-  //   queryKey: ['matching', eventId],
-  //   queryFn: () => getMatchingStatus(eventId),
-  //   select: (response) => response.data,
-  //   refetchInterval: 2000, // 2秒ごとにポーリング
-  //   enabled: !!eventId,
-  // });
-  //
-  // const matchingState = {
-  //   currentParticipants: matchingData?.participants.current || 1,
-  //   minParticipants: matchingData?.participants.min || 4,
-  //   status: matchingData?.status || 'searching',
-  //   isAnimating: false
-  // };
+  // URLパラメータからカレンダーIDを取得
+  const searchParams = new URLSearchParams(location.search);
+  const calendarId = searchParams.get('calendarId');
+
+  // 趣味一覧を取得
+  useEffect(() => {
+    const fetchHobbies = async () => {
+      try {
+        const response = await getHobbyList();
+        setHobbies(response.hobbies || []);
+      } catch (err) {
+        console.error('趣味一覧の取得に失敗しました:', err);
+        // エラーの場合はダミーデータを使用
+        setHobbies([
+          { hobbyId: "1", name: "ボードゲーム" },
+          { hobbyId: "2", name: "バレーボール" },
+          { hobbyId: "3", name: "カラオケ" },
+          { hobbyId: "4", name: "映画鑑賞" }
+        ]);
+      }
+    };
+
+    fetchHobbies();
+  }, []);
+
+  // カレンダー詳細情報を取得
+  useEffect(() => {
+    const fetchCalendarDetail = async () => {
+      if (!calendarId) {
+        setError('カレンダーIDが見つかりません');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const calendarDetail = await getCalendarDetail(userId, calendarId);
+        console.log('calendarDetail', calendarDetail);
+        
+        // カレンダー詳細データをeventDataとして設定
+        setEventData(calendarDetail);
+
+      } catch (err) {
+        console.error('カレンダーデータの取得に失敗しました:', err);
+        
+        // エラーの場合はダミーデータを使用
+        const dummyCalendar = userCalendarsData.find(cal => cal.id.toString() === calendarId) || userCalendarsData[0];
+        const dummyGroup = groupsData.find(group => group.id === dummyCalendar?.group_id) || groupsData[0];
+        
+        if (dummyCalendar && dummyGroup) {
+          // ダミーデータからeventDataを設定
+          setEventData({
+            userId: dummyCalendar.user_id.toString(),
+            hobbyId: dummyCalendar.hobby_id.toString(),
+            date: dummyCalendar.date,
+            timeSlot: dummyCalendar.time_slot,
+            intensity: dummyCalendar.intensity as "casual" | "serious",
+            mincapacity: 2,
+            maxcapacity: 6,
+            capacity: dummyCalendar.attendees,
+            status: dummyCalendar.status as "recruiting" | "matched" | "closed" | null,
+            shops: [{
+              name: dummyGroup.location,
+              address: '東京都渋谷区'
+            }]
+          });
+        } else {
+          setError('カレンダー詳細の取得に失敗しました');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCalendarDetail();
+  }, [calendarId, userId, hobbies]);
+
+  // アクティビティ名を取得する関数
+  const getActivityName = (hobbyId: string): string => {
+    const hobby = hobbies.find(h => h.hobbyId === hobbyId);
+    return hobby ? hobby.name : 'ボードゲーム';
+  };
 
   // マッチング状態管理（ダミー実装）
   const [matchingState, setMatchingState] = useState<MatchingState>({
@@ -121,12 +191,7 @@ const Recruiting: React.FC = () => {
 
   const handleContinue = () => {
     // プロポーザル画面へ遷移
-    navigate('/proposal', { 
-      state: { 
-        eventData, 
-        matchingResult: matchingState 
-      } 
-    });
+    navigate(`/proposal?calendarId=${calendarId}`);
   };
 
   const handleCancel = () => {
@@ -156,6 +221,51 @@ const Recruiting: React.FC = () => {
     }
   };
 
+  // ローディング状態
+  if (loading) {
+    return (
+      <Layout>
+        <div className="max-w-md mx-auto p-4">
+          <div className="text-center py-8">
+            <div className="text-lg">読み込み中...</div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // エラー状態
+  if (error) {
+    return (
+      <Layout>
+        <div className="max-w-md mx-auto p-4">
+          <div className="text-center py-8">
+            <div className="text-red-500 mb-4">{error}</div>
+            <Button onClick={() => navigate('/dashboard')} variant="primary">
+              ダッシュボードに戻る
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // データが取得できない場合
+  if (!eventData) {
+    return (
+      <Layout>
+        <div className="max-w-md mx-auto p-4">
+          <div className="text-center py-8">
+            <div className="text-gray-500 mb-4">イベントデータが見つかりません</div>
+            <Button onClick={() => navigate('/dashboard')} variant="primary">
+              ダッシュボードに戻る
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="max-w-md mx-auto p-4 space-y-6">
@@ -172,13 +282,11 @@ const Recruiting: React.FC = () => {
         {/* マッチング状況表示 */}
         <Card>
           <MatchingStatus
-            eventData={{
-              ...eventData,
-              date: formatEventDate(eventData.date)
-            }}
+            eventData={eventData}
             currentParticipants={matchingState.currentParticipants}
             minParticipants={matchingState.minParticipants}
             status={matchingState.status}
+            hobbies={hobbies}
           />
         </Card>
 
@@ -246,12 +354,12 @@ const Recruiting: React.FC = () => {
           )}
           
           <Button
-            onClick={handleCancel}
+            onClick={() => navigate('/dashboard')}
             variant="outline"
             size="large"
             fullWidth
           >
-            キャンセル
+            戻る
           </Button>
         </div>
       </div>

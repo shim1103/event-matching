@@ -1,24 +1,40 @@
 import React from 'react';
 import { COLORS } from '../../../utils/constants';
+import { CalendarDetailResponse } from '../../../services/api/dto/getCalenderDetailApi-dto';
+import { Hobby } from '../../../services/api/dto/getHobbyListApi-dto';
 
 interface MatchingStatusProps {
-  eventData: {
-    date: string;
-    activity: string;
-    intensity: string;
-    totalCapacity: string;
-  };
+  eventData: CalendarDetailResponse;
   currentParticipants: number;
   minParticipants: number;
   status: 'searching' | 'found' | 'matched';
+  hobbies?: Hobby[];
 }
 
 const MatchingStatus: React.FC<MatchingStatusProps> = ({
   eventData,
   currentParticipants,
   minParticipants,
-  status
+  status,
+  hobbies = []
 }) => {
+  // アクティビティ名を取得する関数
+  const getActivityName = (hobbyId: string): string => {
+    const hobby = hobbies.find(h => h.hobbyId === hobbyId);
+    return hobby ? hobby.name : 'ボードゲーム';
+  };
+
+  // 強度を日本語に変換
+  const getIntensityName = (intensity: string): string => {
+    switch (intensity) {
+      case 'casual':
+        return 'エンジョイ';
+      case 'serious':
+        return 'ガチ';
+      default:
+        return intensity;
+    }
+  };
   const getStatusText = () => {
     switch (status) {
       case 'searching':
@@ -54,13 +70,13 @@ const MatchingStatus: React.FC<MatchingStatusProps> = ({
       {/* イベント詳細表示 */}
       <div className="text-center space-y-2">
         <div className="text-lg font-semibold" style={{ color: COLORS.TEXT }}>
-          {eventData.activity} ({eventData.intensity})
+          {getActivityName(eventData.hobbyId)} ({getIntensityName(eventData.intensity)})
         </div>
         <div className="text-sm text-gray-500">
           {eventData.date}
         </div>
         <div className="text-sm text-gray-500">
-          希望参加人数: {eventData.totalCapacity}
+          希望参加人数: {eventData.mincapacity}-{eventData.maxcapacity}人
         </div>
       </div>
 
