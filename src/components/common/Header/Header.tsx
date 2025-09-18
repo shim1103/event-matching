@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getCurrentUser } from 'aws-amplify/auth';
 import { APP_CONFIG, COLORS } from '../../../utils/constants';
 
 interface HeaderProps {
@@ -7,6 +8,27 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onSettingsClick, onLogoutClick }) => {
+  const [userName, setUserName] = useState<string>('');
+
+  useEffect(() => {
+    const getUserName = async () => {
+      try {
+        // AWS Amplifyから認証されたユーザー情報を取得
+        const user = await getCurrentUser();
+        
+        // user.usernameを取得して表示
+        const displayName = user?.username || 'ユーザー';
+        
+        setUserName(displayName);
+      } catch (error) {
+        console.error('ユーザー情報の取得に失敗しました:', error);
+        setUserName('ゲスト');
+      }
+    };
+
+    getUserName();
+  }, []);
+
   return (
     <header 
       className="flex items-center justify-between px-6 py-4 shadow-lg border-b-2"
@@ -35,6 +57,21 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick, onLogoutClick }) => {
 
       {/* アクションセクション */}
       <div className="flex items-center space-x-3">
+        {/* ユーザー名表示 */}
+        {userName && (
+          <div className="flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-red-50 to-red-100 rounded-xl border border-red-200 shadow-md">
+            <div 
+              className="w-6 h-6 rounded-full flex items-center justify-center"
+              style={{ 
+                background: `linear-gradient(135deg, ${COLORS.PRIMARY} 0%, ${COLORS.SECONDARY} 100%)`
+              }}
+            >
+              <span className="text-white font-bold text-xs">👤</span>
+            </div>
+            <span className="text-sm font-semibold text-red-700 whitespace-nowrap">{userName}</span>
+          </div>
+        )}
+
         {/* 設定ボタン（コメントアウト中） */}
         {/* <button
           onClick={onSettingsClick}
