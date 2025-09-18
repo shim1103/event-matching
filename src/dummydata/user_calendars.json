@@ -4,131 +4,131 @@
     "user_id": 1,
     "hobby_id": 1,
     "group_id": null,
-    "date": "2024-01-15",
+    "date": "2024-12-15",
     "time_slot": "afternoon",
-    "intensity": "serious",
+    "intensity": "ガチ",
     "capacity": 1,
-    "status": "matching"
+    "status": "recruiting"
   },
   {
     "id": 2,
     "user_id": 2,
     "hobby_id": 2,
     "group_id": null,
-    "date": "2024-01-16",
+    "date": "2024-12-16",
     "time_slot": "evening",
-    "intensity": "casual",
+    "intensity": "エンジョイ",
     "capacity": 1,
-    "status": "matching"
+    "status": "recruiting"
   },
   {
     "id": 3,
     "user_id": 3,
     "hobby_id": 3,
     "group_id": 1,
-    "date": "2024-01-17",
+    "date": "2024-12-17",
     "time_slot": "morning",
-    "intensity": "serious",
+    "intensity": "ガチ",
     "capacity": 1,
-    "status": "matching"
+    "status": "matched"
   },
   {
     "id": 4,
     "user_id": 4,
     "hobby_id": 4,
     "group_id": null,
-    "date": "2024-01-18",
+    "date": "2024-12-18",
     "time_slot": "morning",
-    "intensity": "casual",
+    "intensity": "エンジョイ",
     "capacity": 1,
-    "status": "matching"
+    "status": "recruiting"
   },
   {
     "id": 5,
     "user_id": 5,
-    "hobby_id": 5,
+    "hobby_id": 1,
     "group_id": 2,
-    "date": "2024-01-19",
+    "date": "2024-12-19",
     "time_slot": "afternoon",
-    "intensity": "casual",
+    "intensity": "エンジョイ",
     "capacity": 1,
-    "status": "matching"
+    "status": "matched"
   },
   {
     "id": 6,
     "user_id": 6,
-    "hobby_id": 6,
+    "hobby_id": 2,
     "group_id": null,
-    "date": "2024-01-20",
+    "date": "2024-12-20",
     "time_slot": "evening",
-    "intensity": "serious",
+    "intensity": "ガチ",
     "capacity": 1,
-    "status": "matching"
+    "status": "recruiting"
   },
   {
     "id": 7,
     "user_id": 7,
-    "hobby_id": 7,
+    "hobby_id": 3,
     "group_id": 3,
-    "date": "2024-01-21",
+    "date": "2024-12-21",
     "time_slot": "afternoon",
-    "intensity": "casual",
+    "intensity": "エンジョイ",
     "capacity": 1,
-    "status": "matching"
+    "status": "confirmed"
   },
   {
     "id": 8,
     "user_id": 8,
-    "hobby_id": 8,
+    "hobby_id": 4,
     "group_id": null,
-    "date": "2024-01-22",
+    "date": "2024-12-22",
     "time_slot": "morning",
-    "intensity": "casual",
+    "intensity": "エンジョイ",
     "capacity": 1,
-    "status": "matching"
+    "status": "recruiting"
   },
   {
     "id": 9,
     "user_id": 1,
-    "hobby_id": 9,
+    "hobby_id": 1,
     "group_id": null,
-    "date": "2024-01-23",
+    "date": "2024-12-23",
     "time_slot": "evening",
-    "intensity": "casual",
+    "intensity": "エンジョイ",
     "capacity": 1,
-    "status": "matching"
+    "status": "recruiting"
   },
   {
     "id": 10,
     "user_id": 2,
-    "hobby_id": 10,
+    "hobby_id": 4,
     "group_id": 4,
-    "date": "2024-01-24",
+    "date": "2024-12-24",
     "time_slot": "evening",
-    "intensity": "casual",
+    "intensity": "エンジョイ",
     "capacity": 1,
-    "status": "matching"
+    "status": "matched"
   },
   {
     "id": 11,
     "user_id": 3,
     "hobby_id": 1,
     "group_id": null,
-    "date": "2024-01-25",
+    "date": "2024-12-25",
     "time_slot": "afternoon",
-    "intensity": "serious",
+    "intensity": "ガチ",
     "capacity": 1,
-    "status": "canceled"
+    "status": "cancelled"
   },
   {
     "id": 12,
     "user_id": 4,
     "hobby_id": 2,
     "group_id": null,
-    "date": "2024-01-26",
+    "date": "2024-12-26",
     "time_slot": "morning",
-    "intensity": "casual",
+    "intensity": "エンジョイ",
     "capacity": 1,
-    "status": "matching"
+    "status": "recruiting"
   }
 ]
