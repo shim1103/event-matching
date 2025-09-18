@@ -1,15 +1,15 @@
 // 場所・ベニュー関連の型定義
 export interface Venue {
-  id: string;
+  id: number;
   name: string;
   address: string;
   category: string;
-  isRecommended: boolean;
-  capacity: number;
   rating: number;
-  description?: string;
-  imageUrl?: string;
+  capacity: number;
   priceRange?: string;
+  description?: string;
+  amenities?: string[];
+  imageUrl?: string;
 }
 
 export interface VenueSearchParams {

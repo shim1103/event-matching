@@ -1,15 +1,30 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import App from './App';
+import Dashboard from './pages/Dashboard/Dashboard';
+import EventForm from './pages/EventForm/EventForm';
+import Matching from './pages/Matching/Matching';
+import Proposal from './pages/Proposal/Proposal';
 
 // ルート定義
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <Dashboard />,
   },
   {
-    path: '/note',
-    element: <App />,
+    path: '/dashboard',
+    element: <Dashboard />,
+  },
+  {
+    path: '/form',
+    element: <EventForm />,
+  },
+  {
+    path: '/matching',
+    element: <Matching />,
+  },
+  {
+    path: '/proposal',
+    element: <Proposal />,
   },
   {
     path: "*",
