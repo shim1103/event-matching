@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Calendar from '../../components/Calendar';
+import Calendar from '../../components/calendar/Calendar';
 import { getCalenderList } from '../../services/api/client';
 import { CalendarItem } from '../../services/api/dto/getCalenderListApi-dto';
 import userCalendarsData from '../../dummydata/user_calendars.json';
+import Layout from '../../components/common/Layout';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Dashboard: React.FC = () => {
         setUserCalendars(calendars);
       } catch (error) {
         console.error('カレンダーデータの取得に失敗しました:', error);
-        
+
         // エラーの場合はダミーデータを使用
         const dummyCalendars: CalendarItem[] = userCalendarsData
           .filter(cal => cal.user_id.toString() === currentUserId)
@@ -33,7 +34,7 @@ const Dashboard: React.FC = () => {
             date: cal.date,
             status: cal.status
           }));
-        
+
         setUserCalendars(dummyCalendars);
       } finally {
         setLoading(false);
@@ -45,10 +46,10 @@ const Dashboard: React.FC = () => {
 
   const handleDateSelect = (date: Date) => {
     // 選択された日付をstateとして渡してRegisterページに遷移
-    const dateString = date.getFullYear() + '-' + 
-      String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+    const dateString = date.getFullYear() + '-' +
+      String(date.getMonth() + 1).padStart(2, '0') + '-' +
       String(date.getDate()).padStart(2, '0');
-    
+
     // 該当日のcalendarデータを取得
     const selectedDateCalendar = userCalendars.find(cal => cal.date === dateString);
     let path = '';
@@ -77,7 +78,7 @@ const Dashboard: React.FC = () => {
     if (selectedDateCalendar) {
       urlParams.set('calendarId', selectedDateCalendar.calenderId);
     }
-    
+
     const finalPath = `${path}?${urlParams.toString()}`;
     navigate(finalPath);
   };
@@ -93,17 +94,19 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4">カレンダー</h2>
-          <Calendar 
-            onDateSelect={handleDateSelect} 
-            userCalendars={userCalendars}
-          />
+    <Layout>
+      <div className="min-h-screen bg-gray-50 p-4">
+        <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold mb-4">カレンダー</h2>
+            <Calendar
+              onDateSelect={handleDateSelect}
+              userCalendars={userCalendars}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

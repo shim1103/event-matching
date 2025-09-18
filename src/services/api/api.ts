@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../utils/constants";
 
 // 汎用的なAPI呼び出し関数
 export const apiCall = async <T>(
@@ -5,7 +6,7 @@ export const apiCall = async <T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
     body?: any
 ): Promise<T> => {
-    const apiUrl = 'https://26os9pzfpb.execute-api.ap-northeast-1.amazonaws.com';
+    const apiUrl = BASE_URL;
     const url = `${apiUrl}${endpoint}`;
 
     try {

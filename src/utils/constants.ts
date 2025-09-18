@@ -1,6 +1,6 @@
 // アプリケーション定数
 export const APP_CONFIG = {
-  APP_NAME: 'EventMatch',
+  APP_NAME: 'EventMatching',
   VERSION: '1.0.0',
   API_TIMEOUT: 10000,
 } as const;
@@ -63,3 +63,5 @@ export const API_ENDPOINTS = {
   GROUPS: '/api/groups',
   CHAT: '/api/chat'
 } as const;
+
+export const BASE_URL = 'https://26os9pzfpb.execute-api.ap-northeast-1.amazonaws.com';

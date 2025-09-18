@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css'; // カレンダーの基本スタイ�
 
 import ReactCalendar from 'react-calendar'; // ←名前を変更して競合を回避
 
-import { CalendarItem } from '../services/api/dto/getCalenderListApi-dto';
+import { CalendarItem } from '../../services/api/dto/getCalenderListApi-dto';
 
 interface CalendarComponentProps {
   onDateSelect?: (date: Date) => void;
@@ -75,17 +75,86 @@ const Calendar: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendar
           background-color: #3b82f6 !important;
           color: white !important;
         }
+        
+        /* 日曜日から始まるカレンダーのスタイル */
+        .react-calendar {
+          width: 100%;
+          max-width: 100%;
+          background: white;
+          border: 1px solid #a0a096;
+          font-family: Arial, Helvetica, sans-serif;
+          line-height: 1.125em;
+        }
+        
+        .react-calendar__month-view__weekdays {
+          text-align: center;
+          text-transform: uppercase;
+          font-weight: bold;
+          font-size: 0.75em;
+        }
+        
+        .react-calendar__month-view__weekdays__weekday {
+          padding: 0.5em;
+        }
+        
+        /* 日曜日を最初に表示するためのCSS Grid */
+        .react-calendar__month-view__days {
+          display: grid !important;
+          grid-template-columns: repeat(7, 1fr);
+        }
+        
+        .react-calendar__tile {
+          max-width: 100%;
+          padding: 10px 6.6667px;
+          background: none;
+          text-align: center;
+          line-height: 16px;
+          font-size: 13px;
+        }
+        
+        .react-calendar__tile:enabled:hover,
+        .react-calendar__tile:enabled:focus {
+          background-color: #e6e6e6;
+        }
+        
+        .react-calendar__tile--now {
+          background: #ffff76;
+        }
+        
+        .react-calendar__tile--now:enabled:hover,
+        .react-calendar__tile--now:enabled:focus {
+          background: #ffffa9;
+        }
+        
+        .react-calendar__tile--hasActive {
+          background: #76baff;
+        }
+        
+        .react-calendar__tile--hasActive:enabled:hover,
+        .react-calendar__tile--hasActive:enabled:focus {
+          background: #a9d4ff;
+        }
+        
+        .react-calendar__tile--active {
+          background: #006edc;
+          color: white;
+        }
+        
+        .react-calendar__tile--active:enabled:hover,
+        .react-calendar__tile--active:enabled:focus {
+          background: #1087ff;
+        }
       `}</style>
       <ReactCalendar // ←react-calendarのコンポーネント名を変更
         // 選択された日付
         onChange={(value) => handleDateChange(value as Date)}
         // カレンダーに表示する値
         value={value}
-        // 日本語ロケールを設定
-        locale="ja-JP"
-        // カレンダーの表示形式を設定（月曜日から始まる）
+        // 英語ロケールを設定（日曜日から始まる）
+        locale="en-US"
+        // カレンダーの表示形式を設定（日曜日から始まる）
         formatShortWeekday={(locale, date) => {
-          const weekdays = ['月', '火', '水', '木', '金', '土', '日'];
+          const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
           return weekdays[date.getDay()];
         }}
         // 日付に応じてクラス名を適用

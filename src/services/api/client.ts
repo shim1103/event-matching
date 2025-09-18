@@ -15,6 +15,7 @@ const ENDPOINTS = {
         GET_USER_CALENDARS: (userId: string) => `/users/${userId}/calendars`,
     },
     HOBBIES: {
+        // 7.趣味一覧を取得
         GET_HOBBY_LIST: '/hobbies',
     },
 } as const;
