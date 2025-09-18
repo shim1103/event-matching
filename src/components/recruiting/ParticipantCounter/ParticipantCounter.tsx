@@ -1,37 +1,36 @@
 import React from 'react';
 import { COLORS } from '../../../utils/constants';
+import { CalendarDetailResponse } from '../../../services/api/dto/getCalendarDetailApi-dto';
 
 interface ParticipantCounterProps {
-  currentCount: number;
-  minCount: number;
-  maxCount: number;
+  eventData: CalendarDetailResponse;
   isAnimating?: boolean;
 }
 
 const ParticipantCounter: React.FC<ParticipantCounterProps> = ({
-  currentCount,
-  minCount,
-  maxCount,
+  eventData,
   isAnimating = false
 }) => {
-  const progressPercentage = (currentCount / minCount) * 100;
+  const totalParticipants = eventData.count; // countは既にトータルの参加者数
+  const attendees = eventData.attendees;
+  const progressPercentage = (totalParticipants / eventData.mincapacity) * 100;
   console.log('ParticipantCounter progressPercentage', progressPercentage);
 
   return (
     <div className="text-center space-y-4">
       {/* 参加者アイコン表示 */}
       <div className="flex flex-wrap justify-center gap-1 max-w-full">
-        {Array.from({ length: maxCount }).map((_, index) => (
+        {Array.from({ length: eventData.maxcapacity }).map((_, index) => (
           <div
             key={index}
             className={`
               w-6 h-6 rounded-full flex items-center justify-center text-xs
               transition-all duration-300 flex-shrink-0
-              ${index < currentCount 
+              ${index < totalParticipants 
                 ? 'bg-red-500 text-white' 
                 : 'bg-gray-200 text-gray-400'
               }
-              ${isAnimating && index === currentCount - 1 ? 'animate-pulse' : ''}
+              ${isAnimating && index === totalParticipants - 1 ? 'animate-pulse' : ''}
             `}
           >
             👤
@@ -45,13 +44,16 @@ const ParticipantCounter: React.FC<ParticipantCounterProps> = ({
           className="text-2xl font-bold"
           style={{ color: COLORS.PRIMARY }}
         >
-          {currentCount}人参加中
+          {totalParticipants}人参加中
         </div>
         <div className="text-sm text-gray-500">
-          開始まであと{Math.max(0, minCount - currentCount)}人
+          （{attendees}人あなたのグループ）
+        </div>
+        <div className="text-sm text-gray-500">
+          開始まであと{Math.max(0, eventData.mincapacity - totalParticipants)}人
         </div>
         <div className="text-xs text-gray-400">
-          最大{maxCount}人まで
+          最大{eventData.maxcapacity}人まで
         </div>
       </div>
 

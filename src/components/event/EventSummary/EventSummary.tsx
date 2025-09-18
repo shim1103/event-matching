@@ -11,6 +11,7 @@ interface EventSummaryProps {
     mincapacity: number;
     maxcapacity: number;
     attendees: number;
+    count: number;
     status: string;
     shops: Array<{
       name: string;
@@ -165,7 +166,10 @@ const EventSummary: React.FC<EventSummaryProps> = ({
             <span className="text-2xl">👥</span>
             <div>
               <div className="font-semibold" style={{ color: COLORS.TEXT }}>
-                {eventData.attendees}人参加予定
+                {eventData.count}人参加予定
+              </div>
+              <div className="text-sm text-gray-500">
+                （{eventData.attendees}人あなたのグループ）
               </div>
               <div className="text-sm text-gray-500">
                 定員: {eventData.mincapacity}〜{eventData.maxcapacity}人

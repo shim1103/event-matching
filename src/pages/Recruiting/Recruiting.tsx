@@ -16,8 +16,6 @@ import groupsData from '../../dummydata/groups.json';
 type EventData = CalendarDetailResponse;
 
 interface MatchingState {
-  currentParticipants: number;
-  minParticipants: number;
   status: 'searching' | 'found' | 'matched';
   isAnimating: boolean;
 }
@@ -82,10 +80,10 @@ const Recruiting: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         const calendarDetail = await getCalendarDetail(userId || '1', calendarId);
         console.log('calendarDetail', calendarDetail);
-        
+
         // カレンダー詳細データをeventDataとして設定
         setEventData({
           userId: calendarDetail.userId,
@@ -96,6 +94,7 @@ const Recruiting: React.FC = () => {
           mincapacity: calendarDetail.mincapacity,
           maxcapacity: calendarDetail.maxcapacity,
           attendees: calendarDetail.attendees,
+          count: calendarDetail.count,
           status: calendarDetail.status,
           shops: calendarDetail.shops
         });
@@ -103,11 +102,11 @@ const Recruiting: React.FC = () => {
 
       } catch (err) {
         console.error('カレンダーデータの取得に失敗しました:', err);
-        
+
         // エラーの場合はダミーデータを使用
         const dummyCalendar = userCalendarsData.find(cal => cal.id.toString() === calendarId) || userCalendarsData[0];
         const dummyGroup = groupsData.find(group => group.id === dummyCalendar?.group_id) || groupsData[0];
-        
+
         if (dummyCalendar && dummyGroup) {
           // ダミーデータからeventDataを設定
           setEventData({
@@ -119,6 +118,7 @@ const Recruiting: React.FC = () => {
             mincapacity: 2,
             maxcapacity: 6,
             attendees: dummyCalendar.attendees,
+            count:  0,
             status: dummyCalendar.status as "recruiting" | "matched" | "closed" | null,
             shops: [{
               name: dummyGroup.location,
@@ -133,7 +133,7 @@ const Recruiting: React.FC = () => {
       }
     };
 
-    if(userId) {
+    if (userId) {
       fetchCalendarDetail();
     }
   }, [calendarId, userId, hobbies]);
@@ -146,8 +146,6 @@ const Recruiting: React.FC = () => {
 
   // マッチング状態管理
   const [matchingState, setMatchingState] = useState<MatchingState>({
-    currentParticipants: eventData?.attendees || 1, // 実際の参加者数を使用
-    minParticipants: eventData?.mincapacity || 4,
     status: 'searching',
     isAnimating: false
   });
@@ -157,9 +155,7 @@ const Recruiting: React.FC = () => {
     if (eventData) {
       setMatchingState(prev => ({
         ...prev,
-        currentParticipants: eventData.attendees || 1,
-        minParticipants: eventData.mincapacity || 4,
-        status: (eventData.attendees >= (eventData.mincapacity || 4)) ? 'matched' : 'searching'
+        status: (eventData.count >= eventData.mincapacity) ? 'matched' : 'searching'
       }));
     }
   }, [eventData]);
@@ -170,7 +166,7 @@ const Recruiting: React.FC = () => {
       const timer = setTimeout(() => {
         setMatchingState(prev => ({ ...prev, status: 'matched' }));
       }, 3000); // 3秒後にマッチング完了
-      
+
       return () => clearTimeout(timer);
     }
   }, [matchingState.status]);
@@ -192,11 +188,6 @@ const Recruiting: React.FC = () => {
   //     return () => clearTimeout(timer);
   //   }
   // }, [matchingData?.status, navigate, eventData, eventId]);
-
-  const handleContinue = () => {
-    // プロポーザル画面へ遷移
-    navigate(`/proposal?calendarId=${calendarId}`);
-  };
 
   const handleCancel = () => {
     // ===== API版のキャンセル処理 (将来実装) =====
@@ -259,90 +250,76 @@ const Recruiting: React.FC = () => {
   }
 
   return (
-      <div className="min-h-screen bg-gray-50 p-2">
-        <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md p-4">
-          <div className="mb-4">
-            <h2 className="text-base font-semibold mb-3">マッチング中</h2>
+    <div className="min-h-screen bg-gray-50 p-2">
+      <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md p-4">
+        <div className="mb-4">
+          <h2 className="text-base font-semibold mb-3">マッチング中</h2>
 
-            {/* マッチング状況表示 */}
-            <div className="space-y-3">
-              <MatchingStatus
-                eventData={eventData}
-                currentParticipants={matchingState.currentParticipants}
-                minParticipants={matchingState.minParticipants}
-                status={matchingState.status}
-                hobbies={hobbies}
-              />
+          {/* マッチング状況表示 */}
+          <div className="space-y-3">
+            <MatchingStatus
+              eventData={eventData}
+              status={matchingState.status}
+              hobbies={hobbies}
+            />
 
-              {/* 参加者カウンター */}
-              <ParticipantCounter
-                currentCount={matchingState.currentParticipants}
-                minCount={matchingState.minParticipants}
-                maxCount={eventData.maxcapacity || 6}
-                isAnimating={matchingState.isAnimating}
-              />
+            {/* 参加者カウンター */}
+            <ParticipantCounter
+              eventData={eventData}
+              isAnimating={matchingState.isAnimating}
+            />
 
-              {/* ステータスメッセージ */}
-              <div className="text-center space-y-2">
-                {matchingState.status === 'searching' && (
-                  <>
-                    <div className="text-xs font-medium text-gray-700">
-                      あなたと一緒に楽しむ仲間を探しています
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      しばらくお待ちください...
-                    </div>
-                    <div className="flex justify-center">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-red-500"></div>
-                    </div>
-                  </>
-                )}
-                
-                {matchingState.status === 'found' && (
-                  <>
-                    <div className="text-xs font-medium text-red-600">
-                      素敵な仲間が見つかりました！
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      場所の候補を検索しています...
-                    </div>
-                  </>
-                )}
-                
-                {matchingState.status === 'matched' && (
-                  <>
-                    <div className="text-xs font-medium text-green-600">
-                      マッチング完了！
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      おすすめの場所をご提案します
-                    </div>
-                  </>
-                )}
-              </div>
+            {/* ステータスメッセージ */}
+            <div className="text-center space-y-2">
+              {matchingState.status === 'searching' && (
+                <>
+                  <div className="text-xs font-medium text-gray-700">
+                    あなたと一緒に楽しむ仲間を探しています
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    しばらくお待ちください...
+                  </div>
+                  <div className="flex justify-center">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-red-500"></div>
+                  </div>
+                </>
+              )}
 
-              {/* アクションボタン */}
-              <div className="space-y-2">
-                {matchingState.status === 'matched' && (
-                  <button
-                    onClick={handleContinue}
-                    className="w-full bg-red-600 text-white py-2 rounded-lg font-semibold text-xs hover:bg-red-700 transition-colors"
-                  >
-                    提案を確認する
-                  </button>
-                )}
-                
-                <button
-                  onClick={() => navigate('/dashboard')}
-                  className="w-full bg-gray-300 text-gray-700 py-2 rounded-lg font-semibold text-xs hover:bg-gray-400 transition-colors"
-                >
-                  戻る
-                </button>
-              </div>
+              {matchingState.status === 'found' && (
+                <>
+                  <div className="text-xs font-medium text-red-600">
+                    素敵な仲間が見つかりました！
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    場所の候補を検索しています...
+                  </div>
+                </>
+              )}
+
+              {matchingState.status === 'matched' && (
+                <>
+                  <div className="text-xs font-medium text-green-600">
+                    マッチング完了！
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    おすすめの場所をご提案します
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="w-full bg-gray-300 text-gray-700 py-2 rounded-lg font-semibold text-xs hover:bg-gray-400 transition-colors"
+              >
+                戻る
+              </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

@@ -62,6 +62,7 @@ const Proposal: React.FC = () => {
           mincapacity: calendarDetail.mincapacity,
           maxcapacity: calendarDetail.maxcapacity,
           attendees: calendarDetail.attendees,
+          count: calendarDetail.count,
           status: calendarDetail.status,
           shops: calendarDetail.shops
         });
@@ -212,7 +213,7 @@ const Proposal: React.FC = () => {
                     ...eventData,
                     date: formatEventDate(eventData.date)
                   }}
-                  participantCount={eventData.attendees}
+                  participantCount={eventData.count}
                 />
               </div>
 

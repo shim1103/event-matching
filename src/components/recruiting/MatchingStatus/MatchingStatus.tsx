@@ -5,16 +5,12 @@ import { Hobby } from '../../../services/api/dto/getHobbyListApi-dto';
 
 interface MatchingStatusProps {
   eventData: CalendarDetailResponse;
-  currentParticipants: number;
-  minParticipants: number;
   status: 'searching' | 'found' | 'matched';
   hobbies?: Hobby[];
 }
 
 const MatchingStatus: React.FC<MatchingStatusProps> = ({
   eventData,
-  currentParticipants,
-  minParticipants,
   status,
   hobbies = []
 }) => {
@@ -64,7 +60,8 @@ const MatchingStatus: React.FC<MatchingStatusProps> = ({
   };
 
   const getProgressPercentage = () => {
-    return Math.min((currentParticipants / minParticipants) * 100, 100);
+    const totalParticipants = eventData.count; // countは既にトータルの参加者数
+    return Math.min((totalParticipants / eventData.mincapacity) * 100, 100);
   };
 
   return (
@@ -79,7 +76,10 @@ const MatchingStatus: React.FC<MatchingStatusProps> = ({
             {eventData.date}
           </div>
           <div className="text-sm text-gray-500">
-            希望参加人数: {eventData.mincapacity}-{eventData.maxcapacity}人
+            現在の参加者: {eventData.count}人
+          </div>
+          <div className="text-sm text-gray-500">
+            必要人数: {eventData.mincapacity}-{eventData.maxcapacity}人
           </div>
         </div>
       </div>

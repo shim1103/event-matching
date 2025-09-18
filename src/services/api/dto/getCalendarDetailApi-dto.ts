@@ -12,6 +12,7 @@ interface CalendarDetailResponse {
     mincapacity: number;
     maxcapacity: number;
     attendees: number;
+    count: number;
     status: "recruiting" | "matched" | "closed" | null;
     shops: Shop[];
 }
