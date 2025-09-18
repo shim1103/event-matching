@@ -22,45 +22,5 @@
     "email": "suzuki@example.com",
     "address": "東京都港区六本木3-3-3",
     "bio": "サッカーとゲームが趣味です。週に3回はサッカーをしています。"
-  },
-  {
-    "id": 4,
-    "name": "高橋美咲",
-    "phone_number": "090-4567-8901",
-    "email": "takahashi@example.com",
-    "address": "東京都世田谷区三軒茶屋4-4-4",
-    "bio": "ヨガとカフェ巡りが好きです。心と体の健康を大切にしています。"
-  },
-  {
-    "id": 5,
-    "name": "山田健太",
-    "phone_number": "090-5678-9012",
-    "email": "yamada@example.com",
-    "address": "東京都目黒区自由が丘5-5-5",
-    "bio": "写真撮影と旅行が趣味です。日本の美しい風景を撮影するのが好きです。"
-  },
-  {
-    "id": 6,
-    "name": "伊藤由美",
-    "phone_number": "090-6789-0123",
-    "email": "ito@example.com",
-    "address": "東京都品川区大井町6-6-6",
-    "bio": "ダンスと音楽が好きです。週末はダンススタジオで練習しています。"
-  },
-  {
-    "id": 7,
-    "name": "中村大輔",
-    "phone_number": "090-7890-1234",
-    "email": "nakamura@example.com",
-    "address": "東京都杉並区高円寺7-7-7",
-    "bio": "プログラミングと読書が趣味です。新しい技術を学ぶのが楽しいです。"
-  },
-  {
-    "id": 8,
-    "name": "小林恵",
-    "phone_number": "090-8901-2345",
-    "email": "kobayashi@example.com",
-    "address": "東京都練馬区石神井8-8-8",
-    "bio": "絵画と陶芸が好きです。アートを通じて表現することを楽しんでいます。"
   }
 ]

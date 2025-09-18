@@ -1,98 +1,15 @@
 [
   {
     "id": 1,
-    "hobby_id": 3,
-    "organizer_user_id": 3,
-    "date": "2024-01-17",
-    "time_slot": "morning",
-    "intensity": "serious",
-    "capacity": 10,
-    "location": "代々木公園サッカー場",
-    "description": "週末の朝にサッカーを楽しみましょう！初心者も大歓迎です。",
-    "status": "recruiting"
-  },
-  {
-    "id": 2,
-    "hobby_id": 5,
-    "organizer_user_id": 5,
-    "date": "2024-01-19",
-    "time_slot": "afternoon",
-    "intensity": "casual",
-    "capacity": 6,
-    "location": "新宿御苑",
-    "description": "春の新宿御苑で写真撮影会を開催します。桜の季節を楽しみましょう。",
-    "status": "recruiting"
-  },
-  {
-    "id": 3,
-    "hobby_id": 7,
-    "organizer_user_id": 7,
-    "date": "2024-01-21",
-    "time_slot": "afternoon",
-    "intensity": "casual",
-    "capacity": 8,
-    "location": "オンライン（Zoom）",
-    "description": "プログラミング勉強会を開催します。ReactとTypeScriptについて学びましょう。",
-    "status": "recruiting"
-  },
-  {
-    "id": 4,
-    "hobby_id": 10,
-    "organizer_user_id": 2,
-    "date": "2024-01-24",
-    "time_slot": "evening",
-    "intensity": "casual",
-    "capacity": 15,
-    "location": "渋谷シネマサンシャイン",
-    "description": "最新の映画を一緒に観に行きましょう！観賞後は感想を語り合います。",
-    "status": "recruiting"
-  },
-  {
-    "id": 5,
     "hobby_id": 1,
     "organizer_user_id": 1,
-    "date": "2024-01-20",
-    "time_slot": "afternoon",
-    "intensity": "serious",
-    "capacity": 4,
-    "location": "有明テニスセンター",
-    "description": "テニス上級者向けの練習会です。シングルス・ダブルス両方対応。",
-    "status": "matched"
-  },
-  {
-    "id": 6,
-    "hobby_id": 4,
-    "organizer_user_id": 4,
-    "date": "2024-01-18",
-    "time_slot": "morning",
-    "intensity": "casual",
-    "capacity": 8,
-    "location": "代々木公園",
-    "description": "朝のヨガで一日を始めましょう。初心者向けのクラスです。",
-    "status": "closed"
-  },
-  {
-    "id": 7,
-    "hobby_id": 6,
-    "organizer_user_id": 6,
-    "date": "2024-01-25",
-    "time_slot": "evening",
-    "intensity": "serious",
-    "capacity": 6,
-    "location": "渋谷ダンススタジオ",
-    "description": "ヒップホップダンスの練習会です。基礎から応用まで学べます。",
-    "status": "recruiting"
-  },
-  {
-    "id": 8,
-    "hobby_id": 2,
-    "organizer_user_id": 2,
-    "date": "2024-01-26",
+    "date": "2025-09-15",
     "time_slot": "afternoon",
     "intensity": "casual",
-    "capacity": 4,
-    "location": "料理教室（新宿）",
-    "description": "イタリア料理を作りましょう！パスタとピザを作ります。",
-    "status": "recruiting"
+    "capacity": 3,
+    "location": "渋谷テニスコート",
+    "description": "カジュアルなテニスを楽しみましょう！初心者も大歓迎です。",
+    "status": "matched",
+    "count": 3
   }
 ]

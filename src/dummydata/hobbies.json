@@ -19,42 +19,6 @@
   },
   {
     "id": 4,
-    "name": "ヨガ",
-    "max_capacity": 15,
-    "min_capacity": 3
-  },
-  {
-    "id": 5,
-    "name": "写真撮影",
-    "max_capacity": 10,
-    "min_capacity": 2
-  },
-  {
-    "id": 6,
-    "name": "ダンス",
-    "max_capacity": 12,
-    "min_capacity": 4
-  },
-  {
-    "id": 7,
-    "name": "プログラミング",
-    "max_capacity": 8,
-    "min_capacity": 2
-  },
-  {
-    "id": 8,
-    "name": "絵画",
-    "max_capacity": 6,
-    "min_capacity": 2
-  },
-  {
-    "id": 9,
-    "name": "読書",
-    "max_capacity": 10,
-    "min_capacity": 3
-  },
-  {
-    "id": 10,
     "name": "映画鑑賞",
     "max_capacity": 20,
     "min_capacity": 2
