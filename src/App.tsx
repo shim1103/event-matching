@@ -36,6 +36,7 @@ function App({ signOut, user }: { signOut?: () => void; user?: any }) {
             };
 
             const userResponse = await registerUser(userData);
+            localStorage.setItem('userId', userResponse.id);
             console.log('ユーザー登録/取得成功:', userResponse);
             setRegistrationStatus(`ユーザーID: ${userResponse.id} で登録/取得されました`);
             
@@ -103,7 +104,10 @@ function App({ signOut, user }: { signOut?: () => void; user?: any }) {
           </button>
           
           <button 
-            onClick={signOut}
+            onClick={() => {
+              localStorage.removeItem('userId');
+              signOut?.();
+            }}
             style={{ 
               margin: '10px', 
               padding: '10px 20px', 

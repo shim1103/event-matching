@@ -3,11 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import Layout from '../../components/common/Layout';
-import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
-import VenueCard from '../../components/venue/VenueCard';
 import EventSummary from '../../components/event/EventSummary';
-import { COLORS } from '../../utils/constants';
 import venuesData from '../../dummydata/venues.json';
 import groupsData from '../../dummydata/groups.json';
 import userCalendarsData from '../../dummydata/user_calendars.json';
@@ -18,7 +15,11 @@ const Proposal: React.FC = () => {
   const navigate = useNavigate();
   
   // 固定のユーザーID
-  const userId = "1";
+  let userId = localStorage.getItem('userId');
+  if (!userId) {
+    navigate('/');
+  }
+  userId = userId || '1';
   
   // 状態管理
   const [eventData, setEventData] = useState<any>(null);
@@ -70,7 +71,7 @@ const Proposal: React.FC = () => {
         });
 
         // 会場データを設定（ダミーデータ）
-        setAllVenues(venuesData);
+        // setAllVenues(venuesData);
 
       } catch (err) {
         console.error('カレンダー詳細の取得に失敗しました:', err);
@@ -216,7 +217,7 @@ const Proposal: React.FC = () => {
               </div>
 
               {/* 会場リスト */}
-              {allVenues.length > 0 && (
+              {/* {allVenues.length > 0 && (
                 <div>
                   <h3 className="text-xs font-semibold mb-1">📍 会場リスト</h3>
                   <div className="space-y-1">
@@ -229,7 +230,7 @@ const Proposal: React.FC = () => {
                     ))}
                   </div>
                 </div>
-              )}
+              )} */}
 
               {/* 選択された場所の表示 */}
               {selectedVenue && (

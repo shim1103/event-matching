@@ -102,7 +102,7 @@ const EventSummary: React.FC<EventSummaryProps> = ({
     <div className="space-y-4">
       {/* タイトル */}
       <div className="text-center">
-        <h2 
+        <h2
           className="text-xl font-bold"
           style={{ color: COLORS.PRIMARY }}
         >
@@ -174,7 +174,7 @@ const EventSummary: React.FC<EventSummaryProps> = ({
           </div>
         </div>
 
-        {eventData.shops.length > 0 && (
+        {/* {eventData.shops.length > 0 && (
           <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
             <div className="flex items-center space-x-3">
               <span className="text-2xl">📍</span>
@@ -188,9 +188,28 @@ const EventSummary: React.FC<EventSummaryProps> = ({
               </div>
             </div>
           </div>
+        )} */}
+
+        {eventData.shops.length > 0 && (
+          <div>
+            <h3 className="text-xs font-semibold mb-1">📍 会場リスト</h3>
+            {eventData.shops.map((shop) => {
+              return <div className="space-y-1">
+                <div>
+                  <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+                    {shop.name}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    {shop.address}
+                  </div>
+                </div>
+              </div>
+            })}
+          </div>
         )}
+        
       </div>
-    </div>
+    </div >
   );
 };
 

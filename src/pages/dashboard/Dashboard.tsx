@@ -11,15 +11,18 @@ const Dashboard: React.FC = () => {
   const [userCalendars, setUserCalendars] = useState<CalendarItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // ログイン中のユーザーID（定数として設定）
-  const currentUserId = "1";
+  let currentUserId = localStorage.getItem('userId');
+  if (!currentUserId) {
+    navigate('/');
+  }
+  currentUserId = currentUserId || '1';
 
   useEffect(() => {
     // APIからユーザーの予定を取得
     const fetchUserCalendars = async () => {
       try {
         setLoading(true);
-        const response = await getCalendarList(currentUserId);
+        const response = await getCalendarList(currentUserId || '');
         console.log('Dashboard response', response);
 
         const calendars = response.map((calendar) => {

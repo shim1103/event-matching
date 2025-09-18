@@ -31,7 +31,11 @@ const Recruiting: React.FC = () => {
   const location = useLocation();
   
   // 固定のユーザーID
-  const userId = "1";
+  let userId = localStorage.getItem('userId');
+  if (!userId) {
+    navigate('/');
+  }
+  userId = userId || '1';
   
   // 状態管理
   const [eventData, setEventData] = useState<EventData | null>(null);

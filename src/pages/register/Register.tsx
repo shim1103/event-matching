@@ -9,8 +9,13 @@ interface Hobby {
 }
 
 const Register: React.FC = () => {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  let currentUserId = localStorage.getItem('userId');
+  if (!currentUserId) {
+    navigate('/');
+  }
+  currentUserId = currentUserId || '1';
+  const [searchParams] = useSearchParams();
   const selectedDate = searchParams.get('date') || '';
 
   const [selectedHobby, setSelectedHobby] = useState<string | null>(null);
