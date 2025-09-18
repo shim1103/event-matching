@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import Layout from '../../components/common/Layout';
@@ -9,27 +9,64 @@ import MatchingStatus from '../../components/matching/MatchingStatus';
 import ParticipantCounter from '../../components/matching/ParticipantCounter';
 import { COLORS } from '../../utils/constants';
 
+// 型定義をファイル内に移動
+interface EventData {
+  date: string;
+  activity: 'ボードゲーム' | 'バレーボール' | 'カラオケ' | '映画鑑賞';
+  intensity: 'エンジョイ' | 'ガチ';
+  totalCapacity: '4-6人' | '8-12人';
+}
+
+interface MatchingState {
+  currentParticipants: number;
+  minParticipants: number;
+  status: 'searching' | 'found' | 'matched';
+  isAnimating: boolean;
+}
+
+// ===== API版 (将来実装) =====
+// import { useQuery, useQueryClient } from '@tanstack/react-query';
+// import { getMatchingStatus } from '../../services/api/events';
+
 const Matching: React.FC = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   
-  // EventFormから渡されたデータを取得
-  const eventData = location.state?.eventData || {
+  // デモ用のサンプルイベントデータ（他の画面から独立）
+  const [eventData] = useState<EventData>({
     date: new Date().toISOString().split('T')[0],
     activity: 'ボードゲーム',
     intensity: 'エンジョイ',
     totalCapacity: '4-6人'
-  };
+  });
 
-  // マッチング状態管理
-  const [matchingState, setMatchingState] = useState({
+  // ===== API版 (将来実装) =====
+  // const eventId = 1; // 実際のeventId
+  // const queryClient = useQueryClient();
+  //
+  // const { data: matchingData, isLoading, error } = useQuery({
+  //   queryKey: ['matching', eventId],
+  //   queryFn: () => getMatchingStatus(eventId),
+  //   select: (response) => response.data,
+  //   refetchInterval: 2000, // 2秒ごとにポーリング
+  //   enabled: !!eventId,
+  // });
+  //
+  // const matchingState = {
+  //   currentParticipants: matchingData?.participants.current || 1,
+  //   minParticipants: matchingData?.participants.min || 4,
+  //   status: matchingData?.status || 'searching',
+  //   isAnimating: false
+  // };
+
+  // マッチング状態管理（ダミー実装）
+  const [matchingState, setMatchingState] = useState<MatchingState>({
     currentParticipants: 1, // 自分を含む
     minParticipants: 4,
-    status: 'searching' as 'searching' | 'found' | 'matched',
+    status: 'searching',
     isAnimating: false
   });
 
-  // マッチングのシミュレーション
+  // マッチングのシミュレーション（ダミー実装）
   useEffect(() => {
     const interval = setInterval(() => {
       setMatchingState(prev => {
@@ -64,6 +101,24 @@ const Matching: React.FC = () => {
     }
   }, [matchingState.status]);
 
+  // ===== API版のマッチング完了検知 (将来実装) =====
+  // useEffect(() => {
+  //   if (matchingData?.status === 'found') {
+  //     const timer = setTimeout(() => {
+  //       // プロポーザル画面へ自動遷移
+  //       navigate('/proposal', { 
+  //         state: { 
+  //           eventData, 
+  //           matchingResult: matchingData,
+  //           eventId
+  //         } 
+  //       });
+  //     }, 3000);
+  //     
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [matchingData?.status, navigate, eventData, eventId]);
+
   const handleContinue = () => {
     // プロポーザル画面へ遷移
     navigate('/proposal', { 
@@ -75,8 +130,21 @@ const Matching: React.FC = () => {
   };
 
   const handleCancel = () => {
-    // ダッシュボードに戻る
-    navigate('/dashboard');
+    // ===== API版のキャンセル処理 (将来実装) =====
+    // if (eventId) {
+    //   cancelMatching(eventId).then(() => {
+    //     queryClient.invalidateQueries({ queryKey: ['calendarEvents'] });
+    //     navigate('/dashboard');
+    //   }).catch((error) => {
+    //     console.error('キャンセルエラー:', error);
+    //     alert('キャンセルに失敗しました');
+    //   });
+    // } else {
+    //   navigate('/dashboard');
+    // }
+
+    // キャンセル処理（現在は画面のリロード）
+    window.location.reload();
   };
 
   const formatEventDate = (dateString: string) => {

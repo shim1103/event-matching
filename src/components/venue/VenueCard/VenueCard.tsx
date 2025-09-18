@@ -1,6 +1,17 @@
 import React from 'react';
 import { COLORS } from '../../../utils/constants';
-import { Venue } from '../../../types/venue';
+
+// Venue型定義をコンポーネント内に移動
+interface Venue {
+  id: number;
+  name: string;
+  address: string;
+  category: string;
+  capacity: number;
+  rating: number;
+  priceRange?: string;
+  description?: string;
+}
 
 interface VenueCardProps {
   venue: Venue;
