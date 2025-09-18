@@ -35,16 +35,16 @@ const AuthenticatedLayout = () => {
         // ログアウト完了後、認証画面に遷移
         console.log('Redirecting to authentication page...');
         // 完全にページをリロードして認証フローを最初から開始
-        window.location.reload();
+        window.location.href = '/';
       } catch (error) {
         console.error('globalSignOut error:', error);
         // エラーの場合もページをリロード
-        window.location.reload();
+        window.location.href = '/';
       }
     } else {
       console.log('globalSignOut function not found, reloading page...');
       // globalSignOut関数が存在しない場合はページをリロード
-      window.location.reload();
+      window.location.href = '/';
     }
   };
 
