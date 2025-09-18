@@ -119,7 +119,7 @@ const Proposal: React.FC = () => {
     //   navigate('/matching');
     // }
 
-    navigate('/matching');
+    navigate('/recruiting');
   };
 
   const formatEventDate = (dateString: string) => {

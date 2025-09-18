@@ -62,8 +62,17 @@ const Register: React.FC = () => {
       const response = await registerCalender(currentUserId, calenderData);
       console.log('カレンダー登録成功:', response);
       
-      alert('カレンダーを登録しました！');
-      navigate('/dashboard');
+      switch (response.status) {
+        case 'recruiting':
+          navigate('/recruiting');
+          break;
+        case 'matched':
+          navigate('/proposal');
+          break;
+        default:
+          navigate('/dashboard');
+          break;
+      }
     } catch (error) {
       console.error('カレンダー登録に失敗:', error);
       alert('カレンダー登録に失敗しました。もう一度お試しください。');
