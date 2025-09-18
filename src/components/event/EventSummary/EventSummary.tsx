@@ -3,10 +3,26 @@ import { COLORS } from '../../../utils/constants';
 
 interface EventSummaryProps {
   eventData: {
+    userId: number;
+    hobbyId: number;
     date: string;
-    activity: string;
+    timeSlot: string;
     intensity: string;
-    totalCapacity: string;
+    mincapacity: number;
+    maxcapacity: number;
+    attendees: number;
+    status: string;
+    shops: Array<{
+      name: string;
+      address: string;
+    }>;
+    // UI表示用の追加プロパティ
+    title?: string;
+    time?: string;
+    location?: string;
+    description?: string;
+    maxParticipants?: number;
+    currentParticipants?: number;
   };
   participantCount: number;
 }
@@ -15,29 +31,59 @@ const EventSummary: React.FC<EventSummaryProps> = ({
   eventData,
   participantCount
 }) => {
-  const getActivityEmoji = (activity: string): string => {
-    switch (activity) {
-      case 'ボードゲーム':
-        return '🎲';
-      case 'バレーボール':
-        return '🏐';
-      case 'カラオケ':
-        return '🎤';
-      case '映画鑑賞':
-        return '🎬';
+  const getActivityEmoji = (hobbyId: number): string => {
+    switch (hobbyId) {
+      case 1:
+        return '🎲'; // ボードゲーム
+      case 2:
+        return '🏐'; // バレーボール
+      case 3:
+        return '🎤'; // カラオケ
+      case 4:
+        return '🎬'; // 映画鑑賞
       default:
         return '🎯';
     }
   };
 
+  const getActivityName = (hobbyId: number): string => {
+    switch (hobbyId) {
+      case 1:
+        return 'ボードゲーム';
+      case 2:
+        return 'バレーボール';
+      case 3:
+        return 'カラオケ';
+      case 4:
+        return '映画鑑賞';
+      default:
+        return 'イベント';
+    }
+  };
+
   const getIntensityEmoji = (intensity: string): string => {
     switch (intensity) {
-      case 'エンジョイ':
+      case 'casual':
         return '😊';
+      case 'serious':
+        return '🔥';
       case 'ガチ':
         return '🔥';
+      case 'エンジョイ':
+        return '😊';
       default:
         return '⚡';
+    }
+  };
+
+  const getIntensityName = (intensity: string): string => {
+    switch (intensity) {
+      case 'casual':
+        return 'エンジョイ';
+      case 'serious':
+        return 'ガチ';
+      default:
+        return intensity;
     }
   };
 
@@ -57,10 +103,10 @@ const EventSummary: React.FC<EventSummaryProps> = ({
       <div className="space-y-3">
         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
           <div className="flex items-center space-x-3">
-            <span className="text-2xl">{getActivityEmoji(eventData.activity)}</span>
+            <span className="text-2xl">{getActivityEmoji(eventData.hobbyId)}</span>
             <div>
               <div className="font-semibold" style={{ color: COLORS.TEXT }}>
-                {eventData.activity}
+                {getActivityName(eventData.hobbyId)}
               </div>
               <div className="text-sm text-gray-500">アクティビティ</div>
             </div>
@@ -72,7 +118,7 @@ const EventSummary: React.FC<EventSummaryProps> = ({
             <span className="text-2xl">{getIntensityEmoji(eventData.intensity)}</span>
             <div>
               <div className="font-semibold" style={{ color: COLORS.TEXT }}>
-                {eventData.intensity}
+                {getIntensityName(eventData.intensity)}
               </div>
               <div className="text-sm text-gray-500">楽しみ方</div>
             </div>
@@ -93,14 +139,54 @@ const EventSummary: React.FC<EventSummaryProps> = ({
 
         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
           <div className="flex items-center space-x-3">
+            <span className="text-2xl">🕐</span>
+            <div>
+              <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+                {eventData.timeSlot}
+              </div>
+              <div className="text-sm text-gray-500">時間帯</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div className="flex items-center space-x-3">
             <span className="text-2xl">👥</span>
             <div>
               <div className="font-semibold" style={{ color: COLORS.TEXT }}>
-                {participantCount}人参加予定
+                {eventData.attendees}人参加予定
               </div>
               <div className="text-sm text-gray-500">
-                希望人数: {eventData.totalCapacity}
+                定員: {eventData.mincapacity}〜{eventData.maxcapacity}人
               </div>
+            </div>
+          </div>
+        </div>
+
+        {eventData.shops.length > 0 && (
+          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center space-x-3">
+              <span className="text-2xl">📍</span>
+              <div>
+                <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+                  {eventData.shops[0].name}
+                </div>
+                <div className="text-sm text-gray-500">
+                  {eventData.shops[0].address}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div className="flex items-center space-x-3">
+            <span className="text-2xl">📊</span>
+            <div>
+              <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+                {eventData.status}
+              </div>
+              <div className="text-sm text-gray-500">ステータス</div>
             </div>
           </div>
         </div>

@@ -9,128 +9,192 @@ import VenueCard from '../../components/venue/VenueCard';
 import EventSummary from '../../components/event/EventSummary';
 import { COLORS } from '../../utils/constants';
 import venuesData from '../../dummydata/venues.json';
-
-// 型定義をファイル内に移動
-interface Venue {
-  id: number;
-  name: string;
-  address: string;
-  category: string;
-  capacity: number;
-  rating: number;
-  priceRange?: string;
-  description?: string;
-}
-
-// ===== API版 (将来実装) =====
-// import { useQuery, useMutation } from '@tanstack/react-query';
-// import { getRecommendedVenues } from '../../services/api/venues';
-// import { confirmEventParticipation } from '../../services/api/events';
+import groupsData from '../../dummydata/groups.json';
+import userCalendarsData from '../../dummydata/user_calendars.json';
+import { getCalendarDetail } from '../../services/api/client';
+import { CalendarDetailResponse } from '../../services/api/dto/getCalenderDetailApi-dto';
 
 const Proposal: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Matchingから渡されたデータを取得、または独立したサンプルデータを使用
-  const eventData = location.state?.eventData || {
-    date: new Date().toISOString().split('T')[0],
-    activity: 'ボードゲーム' as const,
-    intensity: 'エンジョイ' as const,
-    totalCapacity: '4-6人' as const
-  };
+  // 固定のユーザーID
+  const userId = 1;
+  
+  // 状態管理
+  const [eventData, setEventData] = useState<any>(null);
+  const [matchingResult, setMatchingResult] = useState<any>(null);
+  const [recommendedVenues, setRecommendedVenues] = useState<any[]>([]);
+  const [otherVenues, setOtherVenues] = useState<any[]>([]);
+  const [selectedVenue, setSelectedVenue] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const matchingResult = location.state?.matchingResult || {
-    currentParticipants: 4,
-    status: 'matched'
-  };
+  // URLパラメータからカレンダーIDを取得
+  const searchParams = new URLSearchParams(location.search);
+  const calendarId = searchParams.get('calendarId');
 
-  // ===== API版 (将来実装) =====
-  // const eventId = location.state?.eventId;
-  // 
-  // const { data: venuesResponse, isLoading: venuesLoading, error: venuesError } = useQuery({
-  //   queryKey: ['recommendedVenues', eventData.activity, eventData.totalCapacity],
-  //   queryFn: () => getRecommendedVenues(eventData.activity, eventData.totalCapacity),
-  //   select: (response) => response.data
-  // });
-  //
-  // const confirmParticipationMutation = useMutation({
-  //   mutationFn: (venueId: number) => confirmEventParticipation(eventId, venueId),
-  //   onSuccess: (response) => {
-  //     console.log('参加確定成功:', response.data);
-  //     alert('イベントが確定しました！楽しんでください🎉');
-  //     navigate('/matching'); // マッチング画面に戻る
-  //   },
-  //   onError: (error) => {
-  //     console.error('参加確定エラー:', error);
-  //     alert(`参加確定に失敗しました: ${error.message}`);
-  //   }
-  // });
-
-  // ダミーデータから場所候補を取得
-  const [recommendedVenues, setRecommendedVenues] = useState<Venue[]>([]);
-  const [otherVenues, setOtherVenues] = useState<Venue[]>([]);
-  const [selectedVenue, setSelectedVenue] = useState<Venue | null>(null);
-
+  // カレンダー詳細情報を取得
   useEffect(() => {
-    // アクティビティに基づいて場所をフィルタリング
-    const filteredVenues = venuesData.filter(venue => 
-      venue.category === eventData.activity
-    );
-    
-    // おすすめ場所（最初の2つ）とその他の場所に分割
-    setRecommendedVenues(filteredVenues.slice(0, 2));
-    setOtherVenues(filteredVenues.slice(2));
-  }, [eventData.activity]);
+    const fetchCalendarDetail = async () => {
+      if (!calendarId) {
+        setError('カレンダーIDが見つかりません');
+        setLoading(false);
+        return;
+      }
 
-  const handleVenueSelect = (venue: Venue) => {
-    setSelectedVenue(venue);
-  };
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const calendarDetail = await getCalendarDetail(userId, parseInt(calendarId));
+        
+        // カレンダー詳細データをeventDataとして設定
+        setEventData({
+          userId: calendarDetail.userId,
+          hobbyId: calendarDetail.hobbyId,
+          date: calendarDetail.date,
+          timeSlot: calendarDetail.timeSlot,
+          intensity: calendarDetail.intensity,
+          mincapacity: calendarDetail.mincapacity,
+          maxcapacity: calendarDetail.maxcapacity,
+          attendees: calendarDetail.capacity,
+          status: calendarDetail.status,
+          shops: calendarDetail.shops
+        });
 
-  const handleParticipate = () => {
-    if (!selectedVenue) {
-      alert('場所を選択してください');
-      return;
-    }
+        // マッチング結果を設定
+        setMatchingResult({
+          currentParticipants: calendarDetail.capacity || 0,
+          maxParticipants: calendarDetail.maxcapacity || 10
+        });
 
-    // ===== 現在の実装（ダミーデータ） =====
-    console.log('参加確定:', {
-      eventData,
-      venue: selectedVenue,
-      participants: matchingResult.currentParticipants
-    });
-    
-    alert('イベントが確定しました！楽しんでください🎉');
-    navigate('/matching'); // マッチング画面に戻る
+        // 会場データを設定（ダミーデータ）
+        setRecommendedVenues(venuesData.slice(0, 2));
+        setOtherVenues(venuesData.slice(2, 5));
 
-    // ===== API版 (将来実装) =====
-    // confirmParticipationMutation.mutate(selectedVenue.id);
-  };
+      } catch (err) {
+        console.error('カレンダー詳細の取得に失敗しました:', err);
+        
+        // エラーの場合はダミーデータを使用
+        const dummyCalendar = userCalendarsData.find(cal => cal.id === parseInt(calendarId || '1'));
+        const dummyGroup = groupsData.find(group => group.id === dummyCalendar?.group_id);
+        
+        if (dummyCalendar && dummyGroup) {
+          // ダミーデータからeventDataを設定
+          setEventData({
+            userId: dummyCalendar.user_id,
+            hobbyId: dummyCalendar.hobby_id,
+            date: dummyCalendar.date,
+            timeSlot: dummyCalendar.time_slot,
+            intensity: dummyCalendar.intensity,
+            mincapacity: 2,
+            maxcapacity: 6,
+            attendees: dummyCalendar.attendees,
+            status: dummyCalendar.status,
+            shops: [{
+              name: dummyGroup.location,
+              address: '東京都渋谷区'
+            }]
+          });
 
-  const handleDecline = () => {
-    // ===== API版のキャンセル処理 (将来実装) =====
-    // if (eventId) {
-    //   cancelMatching(eventId).then(() => {
-    //     navigate('/matching');
-    //   }).catch((error) => {
-    //     console.error('辞退エラー:', error);
-    //     alert('辞退処理に失敗しました');
-    //   });
-    // } else {
-    //   navigate('/matching');
-    // }
+          // マッチング結果を設定
+          setMatchingResult({
+            currentParticipants: dummyCalendar.attendees,
+            maxParticipants: 6
+          });
 
-    navigate('/recruiting');
-  };
+          // 会場データを設定
+          setRecommendedVenues(venuesData.slice(0, 2));
+          setOtherVenues(venuesData.slice(2, 5));
+        } else {
+          setError('カレンダー詳細の取得に失敗しました');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchCalendarDetail();
+  }, [calendarId, userId]);
+
+  // 日付フォーマット関数
   const formatEventDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
-      return format(date, 'M月d日（E）', { locale: ja });
+      return format(date, 'M月d日(E)', { locale: ja });
     } catch {
       return dateString;
     }
   };
 
+  // 会場選択ハンドラー
+  const handleVenueSelect = (venue: any) => {
+    setSelectedVenue(venue);
+  };
+
+  // // 参加ハンドラー
+  // const handleParticipate = () => {
+  //   if (selectedVenue) {
+  //     // 参加処理を実装
+  //     console.log('参加確定:', selectedVenue);
+  //     // ここでAPIを呼び出して参加を確定
+  //   }
+  // };
+
+  // // 辞退ハンドラー
+  // const handleDecline = () => {
+  //   // 辞退処理を実装
+  //   console.log('辞退');
+  //   navigate('/dashboard');
+  // };
+
+  // ローディング状態
+  if (loading) {
+    return (
+      <Layout>
+        <div className="max-w-md mx-auto p-4">
+          <div className="text-center py-8">
+            <div className="text-lg">読み込み中...</div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // エラー状態
+  if (error) {
+    return (
+      <Layout>
+        <div className="max-w-md mx-auto p-4">
+          <div className="text-center py-8">
+            <div className="text-red-500 mb-4">{error}</div>
+            <Button onClick={() => navigate('/dashboard')} variant="primary">
+              ダッシュボードに戻る
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  // データが取得できない場合
+  if (!eventData) {
+    return (
+      <Layout>
+        <div className="max-w-md mx-auto p-4">
+          <div className="text-center py-8">
+            <div className="text-gray-500 mb-4">イベントデータが見つかりません</div>
+            <Button onClick={() => navigate('/dashboard')} variant="primary">
+              ダッシュボードに戻る
+            </Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+  
+  
   return (
     <Layout>
       <div className="max-w-md mx-auto p-4 space-y-6">
@@ -154,7 +218,7 @@ const Proposal: React.FC = () => {
               ...eventData,
               date: formatEventDate(eventData.date)
             }}
-            participantCount={matchingResult.currentParticipants}
+            participantCount={eventData.attendees}
           />
         </Card>
 
@@ -224,25 +288,25 @@ const Proposal: React.FC = () => {
 
         {/* アクションボタン */}
         <div className="space-y-3">
-          <Button
-            onClick={handleParticipate}
+          {/* <Button
+            // onClick={handleParticipate}
             variant="primary"
             size="large"
             fullWidth
             disabled={!selectedVenue}
-            // disabled={!selectedVenue || confirmParticipationMutation.isPending} // API版
+            disabled={!selectedVenue || confirmParticipationMutation.isPending} // API版
           >
-            {/* {confirmParticipationMutation.isPending ? '確定中...' : '参加する'} // API版 */}
+            {confirmParticipationMutation.isPending ? '確定中...' : '参加する'} // API版
             参加する
-          </Button>
+          </Button> */}
           
           <Button
-            onClick={handleDecline}
+            onClick={() => navigate('/dashboard')}
             variant="outline"
             size="large"
             fullWidth
           >
-            辞退する
+            戻る
           </Button>
         </div>
 

@@ -6,14 +6,12 @@ import { CalendarDetailResponse } from './dto/getCalenderDetailApi-dto';
 // エンドポイント定義
 const ENDPOINTS = {
     CALENDARS: {
-        // ユーザーのカレンダー一覧を取得
-        GET_USER_CALENDARS: (userId: number) => `/users/${userId}/calendars`,
-        
-        // 特定のカレンダー詳細を取得
+        // 9.特定のカレンダー詳細を取得
         GET_CALENDAR_DETAIL: (userId: number, calendarId: number) => `/users/${userId}/calendars/${calendarId}`,
-        
-        // カレンダーを登録
+        // 16.カレンダーを登録
         REGISTER_CALENDAR: (userId: number) => `/users/${userId}/calendars`,
+        // 19.ユーザーのカレンダー一覧を取得
+        GET_USER_CALENDARS: (userId: number) => `/users/${userId}/calendars`,
     }
 } as const;
 
