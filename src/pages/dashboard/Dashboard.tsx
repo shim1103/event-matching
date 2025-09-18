@@ -113,13 +113,13 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen p-4" style={{ background: 'linear-gradient(135deg, #fef7ed 0%, #f8fafc 100%)' }}>
-      <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6 border-2" style={{ borderColor: '#f59e0b' }}>
+      <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-6 border-2" style={{ borderColor: '#ef4444' }}>
         <div className="mb-6">
           <div className="flex items-center space-x-3 mb-6">
             <div 
               className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
               style={{ 
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
               }}
             >
               <span className="text-white font-bold text-sm">📅</span>
