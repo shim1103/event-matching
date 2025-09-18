@@ -3,8 +3,7 @@ interface Hobby {
     name: string;
 }
 
-interface HobbyListResponse {
-    hobbies: Hobby[];
-}
+// APIから配列が直接返ってくる場合
+export type HobbyListResponse = Hobby[];
 
-export type { Hobby, HobbyListResponse };
+export type { Hobby };

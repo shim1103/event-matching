@@ -52,7 +52,7 @@ const Recruiting: React.FC = () => {
     const fetchHobbies = async () => {
       try {
         const response = await getHobbyList();
-        setHobbies(response.hobbies || []);
+        setHobbies(response || []);
       } catch (err) {
         console.error('趣味一覧の取得に失敗しました:', err);
         // エラーの場合はダミーデータを使用

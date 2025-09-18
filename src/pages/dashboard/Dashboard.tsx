@@ -20,9 +20,9 @@ const Dashboard: React.FC = () => {
       try {
         setLoading(true);
         const response = await getCalenderList(currentUserId);
-        // APIレスポンスからcalendars配列を取得
-        const calendars = response.calendars || [];
-        setUserCalendars(calendars);
+        console.log('Dashboard response', response);
+        // APIレスポンスは配列なので直接使用
+        setUserCalendars(response || []);
       } catch (error) {
         console.error('カレンダーデータの取得に失敗しました:', error);
 

@@ -4,8 +4,7 @@ interface CalendarItem {
     status: string | "recruiting" | "matched" | "closed" | null;
 }
 
-interface CalendarListResponse {
-    calendars: CalendarItem[];
-}
+// APIから配列が直接返ってくる場合
+export type CalendarListResponse = CalendarItem[];
 
-export type { CalendarItem, CalendarListResponse };
+export type { CalendarItem };
