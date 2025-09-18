@@ -24,8 +24,7 @@ const Proposal: React.FC = () => {
   // 状態管理
   const [eventData, setEventData] = useState<any>(null);
   const [matchingResult, setMatchingResult] = useState<any>(null);
-  const [recommendedVenues, setRecommendedVenues] = useState<any[]>([]);
-  const [otherVenues, setOtherVenues] = useState<any[]>([]);
+  const [allVenues, setAllVenues] = useState<any[]>([]);
   const [selectedVenue, setSelectedVenue] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,8 +69,7 @@ const Proposal: React.FC = () => {
         });
 
         // 会場データを設定（ダミーデータ）
-        setRecommendedVenues(venuesData.slice(0, 2));
-        setOtherVenues(venuesData.slice(2, 5));
+        setAllVenues(venuesData);
 
       } catch (err) {
         console.error('カレンダー詳細の取得に失敗しました:', err);
@@ -105,8 +103,7 @@ const Proposal: React.FC = () => {
           });
 
           // 会場データを設定
-          setRecommendedVenues(venuesData.slice(0, 2));
-          setOtherVenues(venuesData.slice(2, 5));
+          setAllVenues(venuesData);
         } else {
           setError('カレンダー詳細の取得に失敗しました');
         }
@@ -222,43 +219,20 @@ const Proposal: React.FC = () => {
           />
         </Card>
 
-        {/* おすすめ場所 */}
-        {recommendedVenues.length > 0 && (
+        {/* 会場リスト */}
+        {allVenues.length > 0 && (
           <div className="space-y-3">
             <h2 
               className="text-lg font-semibold"
               style={{ color: COLORS.TEXT }}
             >
-              🎯 おすすめの場所
+              📍 会場リスト
             </h2>
             <div className="space-y-3">
-              {recommendedVenues.map((venue) => (
+              {allVenues.map((venue) => (
                 <VenueCard
                   key={venue.id}
                   venue={venue}
-                  isRecommended={true}
-                  onSelect={() => handleVenueSelect(venue)}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* その他の場所 */}
-        {otherVenues.length > 0 && (
-          <div className="space-y-3">
-            <h2 
-              className="text-lg font-semibold"
-              style={{ color: COLORS.TEXT }}
-            >
-              📍 その他の候補
-            </h2>
-            <div className="space-y-3">
-              {otherVenues.map((venue) => (
-                <VenueCard
-                  key={venue.id}
-                  venue={venue}
-                  isRecommended={false}
                   onSelect={() => handleVenueSelect(venue)}
                 />
               ))}

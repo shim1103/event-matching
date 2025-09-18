@@ -87,6 +87,17 @@ const EventSummary: React.FC<EventSummaryProps> = ({
     }
   };
 
+  const getTimeSlotName = (timeSlot: string): string => {
+    switch (timeSlot) {
+      case 'morning':
+        return '午前';
+      case 'afternoon':
+        return '午後';
+      default:
+        return timeSlot;
+    }
+  };
+
   return (
     <div className="space-y-4">
       {/* タイトル */}
@@ -142,7 +153,7 @@ const EventSummary: React.FC<EventSummaryProps> = ({
             <span className="text-2xl">🕐</span>
             <div>
               <div className="font-semibold" style={{ color: COLORS.TEXT }}>
-                {eventData.timeSlot}
+                {getTimeSlotName(eventData.timeSlot)}
               </div>
               <div className="text-sm text-gray-500">時間帯</div>
             </div>
@@ -178,18 +189,6 @@ const EventSummary: React.FC<EventSummaryProps> = ({
             </div>
           </div>
         )}
-
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">📊</span>
-            <div>
-              <div className="font-semibold" style={{ color: COLORS.TEXT }}>
-                {eventData.status}
-              </div>
-              <div className="text-sm text-gray-500">ステータス</div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
