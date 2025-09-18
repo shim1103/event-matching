@@ -1,32 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from '../../components/Calendar';
-import { getUserCalendars } from '../../services/api/calendarApi';
-
-interface CalendarResponse {
-  calenderid: number;
-  date: string;
-  status: string;
-}
+import { getCalenderList } from '../../services/api/client';
+import { CalendarItem } from '../../services/api/dto/getCalenderListApi-dto';
+import userCalendarsData from '../../dummydata/user_calendars.json';
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [userCalendars, setUserCalendars] = useState<CalendarResponse[]>([]);
+  const [userCalendars, setUserCalendars] = useState<CalendarItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   // ログイン中のユーザーID（定数として設定）
-  const currentUserId = 1;
+  const currentUserId = "1";
 
   useEffect(() => {
     // APIからユーザーの予定を取得
     const fetchUserCalendars = async () => {
       try {
         setLoading(true);
-        const calendars = getUserCalendars(currentUserId);
-        // console.log('calendars', calendars);
+        const response = await getCalenderList(currentUserId);
+        // APIレスポンスからcalendars配列を取得
+        const calendars = response.calendars || [];
         setUserCalendars(calendars);
       } catch (error) {
         console.error('カレンダーデータの取得に失敗しました:', error);
+        
+        // エラーの場合はダミーデータを使用
+        const dummyCalendars: CalendarItem[] = userCalendarsData
+          .filter(cal => cal.user_id.toString() === currentUserId)
+          .map(cal => ({
+            calenderId: cal.id.toString(),
+            date: cal.date,
+            status: cal.status
+          }));
+        
+        setUserCalendars(dummyCalendars);
       } finally {
         setLoading(false);
       }
@@ -67,7 +75,7 @@ const Dashboard: React.FC = () => {
     const urlParams = new URLSearchParams();
     urlParams.set('date', dateString);
     if (selectedDateCalendar) {
-      urlParams.set('calendarId', selectedDateCalendar.calenderid.toString());
+      urlParams.set('calendarId', selectedDateCalendar.calenderId);
     }
     
     const finalPath = `${path}?${urlParams.toString()}`;

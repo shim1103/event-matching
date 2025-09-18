@@ -19,7 +19,7 @@ const Proposal: React.FC = () => {
   const navigate = useNavigate();
   
   // 固定のユーザーID
-  const userId = 1;
+  const userId = "1";
   
   // 状態管理
   const [eventData, setEventData] = useState<any>(null);
@@ -47,7 +47,7 @@ const Proposal: React.FC = () => {
         setLoading(true);
         setError(null);
         
-        const calendarDetail = await getCalendarDetail(userId, parseInt(calendarId));
+        const calendarDetail = await getCalendarDetail(userId, calendarId);
         
         // カレンダー詳細データをeventDataとして設定
         setEventData({
@@ -77,14 +77,14 @@ const Proposal: React.FC = () => {
         console.error('カレンダー詳細の取得に失敗しました:', err);
         
         // エラーの場合はダミーデータを使用
-        const dummyCalendar = userCalendarsData.find(cal => cal.id === parseInt(calendarId || '1'));
+        const dummyCalendar = userCalendarsData.find(cal => cal.id.toString() === calendarId);
         const dummyGroup = groupsData.find(group => group.id === dummyCalendar?.group_id);
         
         if (dummyCalendar && dummyGroup) {
           // ダミーデータからeventDataを設定
           setEventData({
-            userId: dummyCalendar.user_id,
-            hobbyId: dummyCalendar.hobby_id,
+            userId: dummyCalendar.user_id.toString(),
+            hobbyId: dummyCalendar.hobby_id.toString(),
             date: dummyCalendar.date,
             timeSlot: dummyCalendar.time_slot,
             intensity: dummyCalendar.intensity,

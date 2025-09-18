@@ -3,8 +3,8 @@ import { COLORS } from '../../../utils/constants';
 
 interface EventSummaryProps {
   eventData: {
-    userId: number;
-    hobbyId: number;
+    userId: string;
+    hobbyId: string;
     date: string;
     timeSlot: string;
     intensity: string;
@@ -31,30 +31,30 @@ const EventSummary: React.FC<EventSummaryProps> = ({
   eventData,
   participantCount
 }) => {
-  const getActivityEmoji = (hobbyId: number): string => {
+  const getActivityEmoji = (hobbyId: string): string => {
     switch (hobbyId) {
-      case 1:
+      case "1":
         return '🎲'; // ボードゲーム
-      case 2:
+      case "2":
         return '🏐'; // バレーボール
-      case 3:
+      case "3":
         return '🎤'; // カラオケ
-      case 4:
+      case "4":
         return '🎬'; // 映画鑑賞
       default:
         return '🎯';
     }
   };
 
-  const getActivityName = (hobbyId: number): string => {
+  const getActivityName = (hobbyId: string): string => {
     switch (hobbyId) {
-      case 1:
+      case "1":
         return 'ボードゲーム';
-      case 2:
+      case "2":
         return 'バレーボール';
-      case 3:
+      case "3":
         return 'カラオケ';
-      case 4:
+      case "4":
         return '映画鑑賞';
       default:
         return 'イベント';

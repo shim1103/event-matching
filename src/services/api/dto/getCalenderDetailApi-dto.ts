@@ -4,8 +4,8 @@ interface Shop {
 }
 
 interface CalendarDetailResponse {
-    userId: number;
-    hobbyId: number;
+    userId: string;
+    hobbyId: string;
     date: string;
     timeSlot: string;
     intensity: "serious" | "casual";

@@ -4,15 +4,11 @@ import 'react-calendar/dist/Calendar.css'; // カレンダーの基本スタイ�
 
 import ReactCalendar from 'react-calendar'; // ←名前を変更して競合を回避
 
-interface CalendarResponse {
-  calenderid: number;
-  date: string;
-  status: string;
-}
+import { CalendarItem } from '../services/api/dto/getCalenderListApi-dto';
 
 interface CalendarComponentProps {
   onDateSelect?: (date: Date) => void;
-  userCalendars: CalendarResponse[];
+  userCalendars: CalendarItem[];
 }
 
 const Calendar: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendars }) => { // ←コンポーネント名をCalendarに変更

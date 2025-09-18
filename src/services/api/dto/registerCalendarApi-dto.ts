@@ -1,6 +1,6 @@
 interface RegisterCalender {
-    hobbyId: number;
-    userId: number;
+    hobbyId: string;
+    userId: string;
     date: string;
     timeSlot: string;
     intensity: "serious" | "casual";
@@ -14,8 +14,8 @@ interface Shop {
 }
 
 interface RegisterCalenderResponse {
-    hobbyId: number;
-    userId: number;
+    hobbyId: string;
+    userId: string;
     date: string;
     timeSlot: string;
     intensity: "serious" | "casual";

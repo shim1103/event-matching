@@ -46,10 +46,10 @@ const Register: React.FC = () => {
       setLoading(true);
       
       // 現在のユーザーID（定数として設定）
-      const currentUserId = 1;
+      const currentUserId = "1";
       
       const calenderData = {
-        hobbyId: selectedHobby,
+        hobbyId: selectedHobby.toString(),
         userId: currentUserId,
         date: selectedDate,
         timeSlot: timeSlot,
