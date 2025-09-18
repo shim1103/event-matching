@@ -4,9 +4,10 @@ import { BASE_URL } from "../../utils/constants";
 export const apiCall = async <T>(
     endpoint: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-    body?: any
+    body?: any,
+    baseUrl?: string
 ): Promise<T> => {
-    const apiUrl = BASE_URL;
+    const apiUrl = baseUrl || BASE_URL.CALENDAR_LIST; // デフォルトはカレンダー一覧のURL
     const url = `${apiUrl}${endpoint}`;
 
     try {

@@ -72,11 +72,13 @@ const MatchingStatus: React.FC<MatchingStatusProps> = ({
         <div className="text-lg font-semibold" style={{ color: COLORS.TEXT }}>
           {getActivityName(eventData.hobbyId)} ({getIntensityName(eventData.intensity)})
         </div>
-        <div className="text-sm text-gray-500">
-          {eventData.date}
-        </div>
-        <div className="text-sm text-gray-500">
-          希望参加人数: {eventData.mincapacity}-{eventData.maxcapacity}人
+        <div className="flex gap-2 items-center justify-center">
+          <div className="text-sm text-gray-500">
+            {eventData.date}
+          </div>
+          <div className="text-sm text-gray-500">
+            希望参加人数: {eventData.mincapacity}-{eventData.maxcapacity}人
+          </div>
         </div>
       </div>
 
@@ -85,7 +87,7 @@ const MatchingStatus: React.FC<MatchingStatusProps> = ({
         <div className="text-4xl animate-bounce">
           {getStatusEmoji()}
         </div>
-        <div 
+        <div
           className="text-lg font-medium"
           style={{ color: COLORS.PRIMARY }}
         >
