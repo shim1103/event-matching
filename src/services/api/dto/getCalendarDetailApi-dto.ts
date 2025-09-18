@@ -7,7 +7,7 @@ interface CalendarDetailResponse {
     userId: string;
     hobbyId: string;
     date: string;
-    timeSlot: string;
+    timeSlot: "morning" | "afternoon" | "evening";
     intensity: "serious" | "casual";
     mincapacity: number;
     maxcapacity: number;

@@ -1,4 +1,5 @@
 import { apiCall } from './api';
+import { BASE_URL } from '../../utils/constants';
 import { RegisterCalendar, RegisterCalendarResponse } from './dto/registerCalendarApi-dto';
 import {  CalendarListResponse } from './dto/getCalendarListApi-dto';
 import { CalendarDetailResponse } from './dto/getCalendarDetailApi-dto';
@@ -25,7 +26,8 @@ export const registerCalendar = async (userId: string, calendar: RegisterCalenda
     return apiCall<RegisterCalendarResponse>(
         ENDPOINTS.CALENDARS.REGISTER_CALENDAR(userId),
         'POST',
-        calendar
+        calendar,
+        BASE_URL.REGISTER_CALENDAR
     );
 };
 
@@ -33,7 +35,9 @@ export const registerCalendar = async (userId: string, calendar: RegisterCalenda
 export const getCalendarList = async (userId: string): Promise<CalendarListResponse> => {
     return apiCall<CalendarListResponse>(
         ENDPOINTS.CALENDARS.GET_USER_CALENDARS(userId),
-        'GET'
+        'GET',
+        undefined,
+        BASE_URL.CALENDAR_LIST
     );
 };
 
@@ -41,7 +45,9 @@ export const getCalendarList = async (userId: string): Promise<CalendarListRespo
 export const getCalendarDetail = async (userId: string, calendarId: string): Promise<CalendarDetailResponse> => {
     return apiCall<CalendarDetailResponse>(
         ENDPOINTS.CALENDARS.GET_CALENDAR_DETAIL(userId, calendarId),
-        'GET'
+        'GET',
+        undefined,
+        BASE_URL.CALENDAR_DETAIL
     );
 };
 
@@ -49,6 +55,8 @@ export const getCalendarDetail = async (userId: string, calendarId: string): Pro
 export const getHobbyList = async (): Promise<HobbyListResponse> => {
     return apiCall<HobbyListResponse>(
         ENDPOINTS.HOBBIES.GET_HOBBY_LIST,
-        'GET'
+        'GET',
+        undefined,
+        BASE_URL.HOBBY_LIST
     );
 };

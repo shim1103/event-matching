@@ -19,13 +19,13 @@ const ParticipantCounter: React.FC<ParticipantCounterProps> = ({
   return (
     <div className="text-center space-y-4">
       {/* 参加者アイコン表示 */}
-      <div className="flex justify-center space-x-2">
+      <div className="flex flex-wrap justify-center gap-1 max-w-full">
         {Array.from({ length: maxCount }).map((_, index) => (
           <div
             key={index}
             className={`
-              w-8 h-8 rounded-full flex items-center justify-center text-sm
-              transition-all duration-300
+              w-6 h-6 rounded-full flex items-center justify-center text-xs
+              transition-all duration-300 flex-shrink-0
               ${index < currentCount 
                 ? 'bg-red-500 text-white' 
                 : 'bg-gray-200 text-gray-400'

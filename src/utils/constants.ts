@@ -8,7 +8,7 @@ export const APP_CONFIG = {
 // UI設計に基づくアクティビティ定数
 export const ACTIVITIES = [
   'ボードゲーム',
-  'バレーボール', 
+  'バレーボール',
   'カラオケ',
   '映画鑑賞'
 ] as const;
@@ -20,7 +20,7 @@ export const INTENSITY_OPTIONS = [
 
 export const TIME_SLOTS = [
   'morning',
-  'afternoon', 
+  'afternoon',
   'evening'
 ] as const;
 
@@ -39,7 +39,7 @@ export const EVENT_STATUS = {
 
 export const GROUP_STATUS = {
   RECRUITING: 'recruiting',
-  MATCHED: 'matched', 
+  MATCHED: 'matched',
   CONFIRMED: 'confirmed',
   CANCELLED: 'cancelled'
 } as const;
@@ -64,4 +64,9 @@ export const API_ENDPOINTS = {
   CHAT: '/api/chat'
 } as const;
 
-export const BASE_URL = 'https://26os9pzfpb.execute-api.ap-northeast-1.amazonaws.com';
+export const BASE_URL = {
+  CALENDAR_DETAIL: 'https://uh7j650u2c.execute-api.ap-northeast-1.amazonaws.com',
+  CALENDAR_LIST: 'https://26os9pzfpb.execute-api.ap-northeast-1.amazonaws.com',
+  HOBBY_LIST: 'https://4rcfyrocda.execute-api.ap-northeast-1.amazonaws.com',
+  REGISTER_CALENDAR: 'https://a43o1kucik.execute-api.ap-northeast-1.amazonaws.com/',
+} as const;

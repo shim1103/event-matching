@@ -74,7 +74,7 @@ const Register: React.FC = () => {
         hobbyId: selectedHobby,
         userId: currentUserId,
         date: selectedDate,
-        timeSlot: timeSlot,
+        timeSlot: timeSlot as "morning" | "afternoon" | "evening",
         intensity: intensity as "serious" | "casual",
         attendees: attendees as number,
         status: 'recruiting' as "recruiting" | "matched" | "closed" | null // デフォルトで募集中
@@ -182,6 +182,16 @@ const Register: React.FC = () => {
                       }`}
                   >
                     午後
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTimeSlot('evening')}
+                    className={`p-2 border-2 rounded-lg text-center transition-colors text-xs ${timeSlot === 'evening'
+                      ? 'border-red-500 bg-red-50 text-red-600'
+                      : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                      }`}
+                  >
+                    夜
                   </button>
                 </div>
               </div>

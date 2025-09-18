@@ -2,7 +2,7 @@ interface RegisterCalendar {
     hobbyId: string;
     userId: string;
     date: string;
-    timeSlot: string;
+    timeSlot: "morning" | "afternoon" | "evening";
     intensity: "serious" | "casual";
     attendees: number;
     status: "recruiting" | "matched" | "closed" | null;
@@ -17,7 +17,7 @@ interface RegisterCalendarResponse {
     hobbyId: string;
     userId: string;
     date: string;
-    timeSlot: string;
+    timeSlot: "morning" | "afternoon" | "evening";
     intensity: "serious" | "casual";
     attendees: number;
     status: "recruiting" | "matched" | "closed" | null;

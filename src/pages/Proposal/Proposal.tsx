@@ -195,104 +195,90 @@ const Proposal: React.FC = () => {
   
   return (
     <Layout>
-      <div className="max-w-md mx-auto p-4 space-y-6">
-        {/* タイトル */}
-        <div className="text-center">
-          <h1 
-            className="text-xl font-bold"
-            style={{ color: COLORS.TEXT }}
-          >
-            アプリからの提案
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            あなたにぴったりの場所を見つけました！
-          </p>
-        </div>
+      <div className="min-h-screen bg-gray-50 p-2">
+        <div className="max-w-sm mx-auto bg-white rounded-lg shadow-md p-4">
+          <div className="mb-4">
+            <h2 className="text-base font-semibold mb-3">アプリからの提案</h2>
+            <p className="text-xs text-gray-500 mb-3">
+              あなたにぴったりの場所を見つけました！
+            </p>
 
-        {/* イベントサマリー */}
-        <Card>
-          <EventSummary
-            eventData={{
-              ...eventData,
-              date: formatEventDate(eventData.date)
-            }}
-            participantCount={eventData.attendees}
-          />
-        </Card>
-
-        {/* 会場リスト */}
-        {allVenues.length > 0 && (
-          <div className="space-y-3">
-            <h2 
-              className="text-lg font-semibold"
-              style={{ color: COLORS.TEXT }}
-            >
-              📍 会場リスト
-            </h2>
-            <div className="space-y-3">
-              {allVenues.map((venue) => (
-                <VenueCard
-                  key={venue.id}
-                  venue={venue}
-                  onSelect={() => handleVenueSelect(venue)}
+            <form className="space-y-3">
+              {/* イベントサマリー */}
+              <div>
+                <EventSummary
+                  eventData={{
+                    ...eventData,
+                    date: formatEventDate(eventData.date)
+                  }}
+                  participantCount={eventData.attendees}
                 />
-              ))}
-            </div>
+              </div>
+
+              {/* 会場リスト */}
+              {allVenues.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold mb-1">📍 会場リスト</h3>
+                  <div className="space-y-1">
+                    {allVenues.map((venue) => (
+                      <VenueCard
+                        key={venue.id}
+                        venue={venue}
+                        onSelect={() => handleVenueSelect(venue)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 選択された場所の表示 */}
+              {selectedVenue && (
+                <div>
+                  <div className="border-2 border-red-500 rounded-lg p-2 text-center bg-red-50">
+                    <div className="text-xs font-medium text-red-600 mb-1">
+                      選択中の場所
+                    </div>
+                    <div className="text-sm font-semibold text-gray-700">
+                      {selectedVenue.name}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {selectedVenue.address}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* アクションボタン */}
+              <div className="space-y-1">
+                {/* <button
+                  // onClick={handleParticipate}
+                  type="button"
+                  className="w-full bg-red-600 text-white py-2 rounded-lg font-semibold text-xs hover:bg-red-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  disabled={!selectedVenue}
+                >
+                  参加する
+                </button> */}
+                
+                <button
+                  type="button"
+                  onClick={() => navigate('/dashboard')}
+                  className="w-full bg-gray-300 text-gray-700 py-2 rounded-lg font-semibold text-xs hover:bg-gray-400 transition-colors"
+                >
+                  戻る
+                </button>
+              </div>
+
+              {/* 注意事項 */}
+              <div className="bg-gray-50 rounded-lg p-2">
+                <div className="text-xs text-gray-600 space-y-1">
+                  <p>・参加確定後のキャンセルはできません</p>
+                  <p>・場所の予約は各自で行ってください</p>
+                  <p>・当日の連絡先は後日お知らせします</p>
+                </div>
+              </div>
+            </form>
           </div>
-        )}
-
-        {/* 選択された場所の表示 */}
-        {selectedVenue && (
-          <Card padding="medium" className="border-2 border-red-500">
-            <div className="text-center space-y-2">
-              <div 
-                className="text-sm font-medium"
-                style={{ color: COLORS.PRIMARY }}
-              >
-                選択中の場所
-              </div>
-              <div className="text-lg font-semibold" style={{ color: COLORS.TEXT }}>
-                {selectedVenue.name}
-              </div>
-              <div className="text-sm text-gray-500">
-                {selectedVenue.address}
-              </div>
-            </div>
-          </Card>
-        )}
-
-        {/* アクションボタン */}
-        <div className="space-y-3">
-          {/* <Button
-            // onClick={handleParticipate}
-            variant="primary"
-            size="large"
-            fullWidth
-            disabled={!selectedVenue}
-            disabled={!selectedVenue || confirmParticipationMutation.isPending} // API版
-          >
-            {confirmParticipationMutation.isPending ? '確定中...' : '参加する'} // API版
-            参加する
-          </Button> */}
-          
-          <Button
-            onClick={() => navigate('/dashboard')}
-            variant="outline"
-            size="large"
-            fullWidth
-          >
-            戻る
-          </Button>
         </div>
-
-        {/* 注意事項 */}
-        <Card padding="small" className="bg-gray-50">
-          <div className="text-xs text-gray-600 space-y-1">
-            <p>・参加確定後のキャンセルはできません</p>
-            <p>・場所の予約は各自で行ってください</p>
-            <p>・当日の連絡先は後日お知らせします</p>
-          </div>
-        </Card>
       </div>
     </Layout>
   );
