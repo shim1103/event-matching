@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // スタイルシートもインポートします
 import 'react-calendar/dist/Calendar.css'; // カレンダーの基本スタイル
 
-import Calendar from 'react-calendar';
+import ReactCalendar from 'react-calendar'; // ←名前を変更して競合を回避
 
 interface CalendarResponse {
   calenderid: number;
@@ -15,7 +15,7 @@ interface CalendarComponentProps {
   userCalendars: CalendarResponse[];
 }
 
-const CalendarComponent: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendars }) => {
+const Calendar: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendars }) => { // ←コンポーネント名をCalendarに変更
   // 選択された日付を管理するためのState
   const [value, onChange] = useState(new Date());
 
@@ -80,7 +80,7 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onDateSelect, use
           color: white !important;
         }
       `}</style>
-      <Calendar
+      <ReactCalendar // ←react-calendarのコンポーネント名を変更
         // 選択された日付
         onChange={(value) => handleDateChange(value as Date)}
         // カレンダーに表示する値
@@ -118,4 +118,4 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ onDateSelect, use
   );
 };
 
-export default CalendarComponent;
+export default Calendar; // ←export名をCalendarに変更

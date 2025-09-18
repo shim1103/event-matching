@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import hobbiesData from '../../dummydata/hobbies.json';
 import { registerCalender } from '../../services/api/client';
@@ -14,7 +14,6 @@ const Register: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const selectedDate = searchParams.get('date') || '';
-  const calendarId = searchParams.get('calendarId');
 
   const [selectedHobby, setSelectedHobby] = useState<number | null>(null);
   const [timeSlot, setTimeSlot] = useState<string>('');
