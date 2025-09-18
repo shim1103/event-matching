@@ -9,29 +9,29 @@ import Layout from './components/common/Layout';
 // 認証されたレイアウトコンポーネント
 const AuthenticatedLayout = () => {
   const handleLogout = async () => {
-    if(!window.confirm('ログアウトしますか？')) {
+    if (!window.confirm('ログアウトしますか？')) {
       return;
     }
-    
+
     console.log('handleLogout called');
     console.log('window object:', window);
     console.log('window.globalSignOut:', (window as any).globalSignOut);
-    
+
     localStorage.removeItem('userId');
     // ログアウト要求フラグを設定
     localStorage.setItem('logoutRequested', 'true');
-    
+
     // AWS AmplifyのsignOut関数を呼び出し
     const globalSignOut = (window as any).globalSignOut;
     console.log('globalSignOut function:', globalSignOut);
-    
+
     if (globalSignOut) {
       console.log('Calling globalSignOut...');
       try {
         const result = await globalSignOut();
         console.log('globalSignOut result:', result);
         console.log('Logout completed successfully');
-        
+
         // ログアウト完了後、認証画面に遷移
         console.log('Redirecting to authentication page...');
         // 完全にページをリロードして認証フローを最初から開始
@@ -80,6 +80,10 @@ const router = createBrowserRouter([
         path: '/proposal',
         element: <Proposal />,
       },
+      {
+        path: '/',
+        element: <Navigate to="/dashboard" />,
+      }
     ]
   },
   {
