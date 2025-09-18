@@ -1,7 +1,7 @@
 import { apiCall } from './api';
-import { RegisterCalender, RegisterCalenderResponse } from './dto/registerCalendarApi-dto';
-import {  CalendarListResponse } from './dto/getCalenderListApi-dto';
-import { CalendarDetailResponse } from './dto/getCalenderDetailApi-dto';
+import { RegisterCalendar, RegisterCalendarResponse } from './dto/registerCalendarApi-dto';
+import {  CalendarListResponse } from './dto/getCalendarListApi-dto';
+import { CalendarDetailResponse } from './dto/getCalendarDetailApi-dto';
 import { HobbyListResponse } from './dto/getHobbyListApi-dto';
 
 // エンドポイント定義
@@ -21,16 +21,16 @@ const ENDPOINTS = {
 } as const;
 
 // カレンダー登録
-export const registerCalender = async (userId: string, calender: RegisterCalender): Promise<RegisterCalenderResponse> => {
-    return apiCall<RegisterCalenderResponse>(
+export const registerCalendar = async (userId: string, calendar: RegisterCalendar): Promise<RegisterCalendarResponse> => {
+    return apiCall<RegisterCalendarResponse>(
         ENDPOINTS.CALENDARS.REGISTER_CALENDAR(userId),
         'POST',
-        calender
+        calendar
     );
 };
 
 // カレンダー一覧取得
-export const getCalenderList = async (userId: string): Promise<CalendarListResponse> => {
+export const getCalendarList = async (userId: string): Promise<CalendarListResponse> => {
     return apiCall<CalendarListResponse>(
         ENDPOINTS.CALENDARS.GET_USER_CALENDARS(userId),
         'GET'
@@ -38,9 +38,9 @@ export const getCalenderList = async (userId: string): Promise<CalendarListRespo
 };
 
 // カレンダー詳細取得
-export const getCalendarDetail = async (userId: string, calenderId: string): Promise<CalendarDetailResponse> => {
+export const getCalendarDetail = async (userId: string, calendarId: string): Promise<CalendarDetailResponse> => {
     return apiCall<CalendarDetailResponse>(
-        ENDPOINTS.CALENDARS.GET_CALENDAR_DETAIL(userId, calenderId),
+        ENDPOINTS.CALENDARS.GET_CALENDAR_DETAIL(userId, calendarId),
         'GET'
     );
 };

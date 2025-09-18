@@ -4,7 +4,7 @@ import 'react-calendar/dist/Calendar.css'; // カレンダーの基本スタイ�
 
 import ReactCalendar from 'react-calendar'; // ←名前を変更して競合を回避
 
-import { CalendarItem } from '../../services/api/dto/getCalenderListApi-dto';
+import { CalendarItem } from '../../services/api/dto/getCalendarListApi-dto';
 
 interface CalendarComponentProps {
   onDateSelect?: (date: Date) => void;

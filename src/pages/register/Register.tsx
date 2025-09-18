@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import hobbiesData from '../../dummydata/hobbies.json';
-import { registerCalender } from '../../services/api/client';
+import { registerCalendar, getHobbyList } from '../../services/api/client';
 import Layout from '../../components/common/Layout';
 
 interface Hobby {
-  id: number;
+  hobbyId: string;
   name: string;
-  max_capacity: number;
-  min_capacity: number;
 }
 
 const Register: React.FC = () => {
@@ -16,13 +13,37 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const selectedDate = searchParams.get('date') || '';
 
-  const [selectedHobby, setSelectedHobby] = useState<number | null>(null);
+  const [selectedHobby, setSelectedHobby] = useState<string | null>(null);
   const [timeSlot, setTimeSlot] = useState<string>('');
   const [intensity, setIntensity] = useState<string>('');
   const [attendees, setAttendees] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [hobbies, setHobbies] = useState<Hobby[]>([]);
+  const [hobbiesLoading, setHobbiesLoading] = useState(true);
 
-  const hobbies: Hobby[] = hobbiesData;
+  // 趣味一覧を取得
+  useEffect(() => {
+    const fetchHobbies = async () => {
+      try {
+        setHobbiesLoading(true);
+        const response = await getHobbyList();
+        setHobbies(response || []);
+      } catch (err) {
+        console.error('趣味一覧の取得に失敗しました:', err);
+        // エラーの場合はダミーデータを使用
+        setHobbies([
+          { hobbyId: "1", name: "ボードゲーム" },
+          { hobbyId: "2", name: "バレーボール" },
+          { hobbyId: "3", name: "カラオケ" },
+          { hobbyId: "4", name: "映画鑑賞" }
+        ]);
+      } finally {
+        setHobbiesLoading(false);
+      }
+    };
+
+    fetchHobbies();
+  }, []);
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '';
@@ -49,8 +70,8 @@ const Register: React.FC = () => {
       // 現在のユーザーID（定数として設定）
       const currentUserId = "1";
 
-      const calenderData = {
-        hobbyId: selectedHobby.toString(),
+      const calendarData = {
+        hobbyId: selectedHobby,
         userId: currentUserId,
         date: selectedDate,
         timeSlot: timeSlot,
@@ -59,7 +80,7 @@ const Register: React.FC = () => {
         status: 'recruiting' as "recruiting" | "matched" | "closed" | null // デフォルトで募集中
       };
 
-      const response = await registerCalender(currentUserId, calenderData);
+      const response = await registerCalendar(currentUserId, calendarData);
       console.log('カレンダー登録成功:', response);
 
       switch (response.status) {
@@ -108,21 +129,34 @@ const Register: React.FC = () => {
               {/* 趣味選択 */}
               <div>
                 <h3 className="text-xs font-semibold mb-1">何をしたいですか？</h3>
-                <div className="grid grid-cols-2 gap-1">
-                  {hobbies.slice(0, 4).map((hobby) => (
-                    <button
-                      key={hobby.id}
-                      type="button"
-                      onClick={() => setSelectedHobby(hobby.id)}
-                      className={`p-2 border-2 rounded-lg text-center transition-colors text-xs ${selectedHobby === hobby.id
+                {hobbiesLoading ? (
+                  <div className="grid grid-cols-2 gap-1">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="p-2 border-2 rounded-lg text-center text-xs bg-gray-100 animate-pulse"
+                      >
+                        読み込み中...
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-1">
+                    {hobbies.slice(0, 4).map((hobby) => (
+                      <button
+                        key={hobby.hobbyId}
+                        type="button"
+                        onClick={() => setSelectedHobby(hobby.hobbyId)}
+                        className={`p-2 border-2 rounded-lg text-center transition-colors text-xs ${selectedHobby === hobby.hobbyId
                           ? 'border-red-500 bg-red-50 text-red-600'
                           : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
-                        }`}
-                    >
-                      {hobby.name}
-                    </button>
-                  ))}
-                </div>
+                          }`}
+                      >
+                        {hobby.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* 時間帯選択 */}
@@ -133,8 +167,8 @@ const Register: React.FC = () => {
                     type="button"
                     onClick={() => setTimeSlot('morning')}
                     className={`p-2 border-2 rounded-lg text-center transition-colors text-xs ${timeSlot === 'morning'
-                        ? 'border-red-500 bg-red-50 text-red-600'
-                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                      ? 'border-red-500 bg-red-50 text-red-600'
+                      : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
                       }`}
                   >
                     午前
@@ -143,8 +177,8 @@ const Register: React.FC = () => {
                     type="button"
                     onClick={() => setTimeSlot('afternoon')}
                     className={`p-2 border-2 rounded-lg text-center transition-colors text-xs ${timeSlot === 'afternoon'
-                        ? 'border-red-500 bg-red-50 text-red-600'
-                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                      ? 'border-red-500 bg-red-50 text-red-600'
+                      : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
                       }`}
                   >
                     午後
@@ -160,8 +194,8 @@ const Register: React.FC = () => {
                     type="button"
                     onClick={() => setIntensity('casual')}
                     className={`p-2 border-2 rounded-lg text-center transition-colors text-xs ${intensity === 'casual'
-                        ? 'border-red-500 bg-red-50 text-red-600'
-                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                      ? 'border-red-500 bg-red-50 text-red-600'
+                      : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
                       }`}
                   >
                     エンジョイ
@@ -170,8 +204,8 @@ const Register: React.FC = () => {
                     type="button"
                     onClick={() => setIntensity('serious')}
                     className={`p-2 border-2 rounded-lg text-center transition-colors text-xs ${intensity === 'serious'
-                        ? 'border-red-500 bg-red-50 text-red-600'
-                        : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                      ? 'border-red-500 bg-red-50 text-red-600'
+                      : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
                       }`}
                   >
                     ガチ

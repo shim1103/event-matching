@@ -9,7 +9,7 @@ import MatchingStatus from '../../components/recruiting/MatchingStatus';
 import ParticipantCounter from '../../components/recruiting/ParticipantCounter';
 import { COLORS } from '../../utils/constants';
 import { getCalendarDetail, getHobbyList } from '../../services/api/client';
-import { CalendarDetailResponse } from '../../services/api/dto/getCalenderDetailApi-dto';
+import { CalendarDetailResponse } from '../../services/api/dto/getCalendarDetailApi-dto';
 import { Hobby } from '../../services/api/dto/getHobbyListApi-dto';
 import userCalendarsData from '../../dummydata/user_calendars.json';
 import groupsData from '../../dummydata/groups.json';

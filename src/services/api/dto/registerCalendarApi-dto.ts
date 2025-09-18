@@ -1,4 +1,4 @@
-interface RegisterCalender {
+interface RegisterCalendar {
     hobbyId: string;
     userId: string;
     date: string;
@@ -13,7 +13,7 @@ interface Shop {
     address: string;
 }
 
-interface RegisterCalenderResponse {
+interface RegisterCalendarResponse {
     hobbyId: string;
     userId: string;
     date: string;
@@ -25,4 +25,4 @@ interface RegisterCalenderResponse {
 }
 
 
-export type { RegisterCalender, RegisterCalenderResponse };
+export type { RegisterCalendar, RegisterCalendarResponse };

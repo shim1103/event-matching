@@ -45,7 +45,9 @@ const Proposal: React.FC = () => {
         setLoading(true);
         setError(null);
         
+        console.log('Proposal calendarId', calendarId);
         const calendarDetail = await getCalendarDetail(userId, calendarId);
+        console.log('Proposal calendarDetail', calendarDetail);
         
         // カレンダー詳細データをeventDataとして設定
         setEventData({

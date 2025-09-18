@@ -1,6 +1,6 @@
 import React from 'react';
 import { COLORS } from '../../../utils/constants';
-import { CalendarDetailResponse } from '../../../services/api/dto/getCalenderDetailApi-dto';
+import { CalendarDetailResponse } from '../../../services/api/dto/getCalendarDetailApi-dto';
 import { Hobby } from '../../../services/api/dto/getHobbyListApi-dto';
 
 interface MatchingStatusProps {

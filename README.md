@@ -189,8 +189,8 @@ src/
 │       ├── calendarApi.ts # カレンダーAPI
 │       ├── client.ts   # HTTPクライアント
 │       └── dto/        # 型定義（Data Transfer Object）
-│           ├── getCalenderDetailApi-dto.ts
-│           ├── getCalenderListApi-dto.ts
+│           ├── getCalendarDetailApi-dto.ts
+│           ├── getCalendarListApi-dto.ts
 │           └── registerCalendarApi-dto.ts
 ├── dummydata/          # ダミーデータ
 │   ├── groupchat.json
@@ -217,9 +217,9 @@ src/
 
 #### 1. カレンダー登録 (`registerCalendarApi-dto.ts`)
 ```typescript
-interface RegisterCalender {
-    hobbyId: number;
-    userId: number;
+interface RegisterCalendar {
+    hobbyId: string;
+    userId: string;
     date: string;
     timeSlot: string;
     intensity: "serious" | "casual";
@@ -227,13 +227,13 @@ interface RegisterCalender {
     status: "recruiting" | "matched" | "closed" | null;
 }
 
-interface RegisterCalenderResponse {
-    calenderId: number;
+interface RegisterCalendarResponse {
+    calendarId: string;
 }
 ```
 
-#### 2. カレンダー詳細取得 (`getCalenderDetailApi-dto.ts`)
-#### 3. カレンダー一覧取得 (`getCalenderListApi-dto.ts`)
+#### 2. カレンダー詳細取得 (`getCalendarDetailApi-dto.ts`)
+#### 3. カレンダー一覧取得 (`getCalendarListApi-dto.ts`)
 
 ### Base URL
 ```
@@ -266,7 +266,7 @@ GET /api/calendar/list?userId={userId}
 
 #### 3. カレンダー詳細取得
 ```http
-GET /api/calendar/detail/{calenderId}
+GET /api/calendar/detail/{calendarId}
 ```
 
 ## 🧪 テスト

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Calendar from '../../components/calendar/Calendar';
-import { getCalenderList } from '../../services/api/client';
-import { CalendarItem } from '../../services/api/dto/getCalenderListApi-dto';
+import { getCalendarList } from '../../services/api/client';
+import { CalendarItem } from '../../services/api/dto/getCalendarListApi-dto';
 import userCalendarsData from '../../dummydata/user_calendars.json';
 import Layout from '../../components/common/Layout';
 
@@ -19,10 +19,20 @@ const Dashboard: React.FC = () => {
     const fetchUserCalendars = async () => {
       try {
         setLoading(true);
-        const response = await getCalenderList(currentUserId);
+        const response = await getCalendarList(currentUserId);
         console.log('Dashboard response', response);
+
+        const calendars = response.map((calendar) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const calendarId = calendar.calendarId || (calendar as any).calendarid || '';
+          return ({
+            calendarId: calendarId,
+            date: calendar.date,
+            status: calendar.status
+          });
+        });
         // APIレスポンスは配列なので直接使用
-        setUserCalendars(response || []);
+        setUserCalendars(calendars || []);
       } catch (error) {
         console.error('カレンダーデータの取得に失敗しました:', error);
 
@@ -30,7 +40,7 @@ const Dashboard: React.FC = () => {
         const dummyCalendars: CalendarItem[] = userCalendarsData
           .filter(cal => cal.user_id.toString() === currentUserId)
           .map(cal => ({
-            calenderId: cal.id.toString(),
+            calendarId: cal.id.toString(),
             date: cal.date,
             status: cal.status
           }));
@@ -45,7 +55,6 @@ const Dashboard: React.FC = () => {
   }, [currentUserId]);
 
   const handleDateSelect = (date: Date) => {
-    // 選択された日付をstateとして渡してRegisterページに遷移
     const dateString = date.getFullYear() + '-' +
       String(date.getMonth() + 1).padStart(2, '0') + '-' +
       String(date.getDate()).padStart(2, '0');
@@ -53,6 +62,8 @@ const Dashboard: React.FC = () => {
     // 該当日のcalendarデータを取得
     const selectedDateCalendar = userCalendars.find(cal => cal.date === dateString);
     let path = '';
+
+
 
     switch (selectedDateCalendar?.status) {
       case 'recruiting':
@@ -72,11 +83,13 @@ const Dashboard: React.FC = () => {
         break;
     }
 
+    console.log('Dashboard selectedDateCalendar', selectedDateCalendar);
+
     // URLに日付とカレンダーIDを含める
     const urlParams = new URLSearchParams();
     urlParams.set('date', dateString);
     if (selectedDateCalendar) {
-      urlParams.set('calendarId', selectedDateCalendar.calenderId);
+      urlParams.set('calendarId', selectedDateCalendar.calendarId);
     }
 
     const finalPath = `${path}?${urlParams.toString()}`;
