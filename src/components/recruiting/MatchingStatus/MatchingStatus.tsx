@@ -95,10 +95,6 @@ const MatchingStatus: React.FC<MatchingStatusProps> = ({
 
       {/* プログレスバー */}
       <div className="space-y-2">
-        <div className="flex justify-between text-sm text-gray-600">
-          <span>現在の参加者</span>
-          <span>{currentParticipants}/{minParticipants}人</span>
-        </div>
         <div className="w-full bg-gray-200 rounded-full h-3">
           <div
             className="h-3 rounded-full transition-all duration-500"

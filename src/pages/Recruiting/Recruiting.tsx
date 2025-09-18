@@ -128,37 +128,25 @@ const Recruiting: React.FC = () => {
     return hobby ? hobby.name : 'ボードゲーム';
   };
 
-  // マッチング状態管理（ダミー実装）
+  // マッチング状態管理
   const [matchingState, setMatchingState] = useState<MatchingState>({
-    currentParticipants: 1, // 自分を含む
-    minParticipants: 4,
+    currentParticipants: eventData?.capacity || 1, // 実際の参加者数を使用
+    minParticipants: eventData?.mincapacity || 4,
     status: 'searching',
     isAnimating: false
   });
 
-  // マッチングのシミュレーション（ダミー実装）
+  // eventDataが更新されたときにmatchingStateも更新
   useEffect(() => {
-    const interval = setInterval(() => {
-      setMatchingState(prev => {
-        // 参加者が最小人数に達していない場合、ランダムに増加
-        if (prev.currentParticipants < prev.minParticipants) {
-          const shouldIncrease = Math.random() > 0.7; // 30%の確率で参加者増加
-          if (shouldIncrease) {
-            const newCount = prev.currentParticipants + 1;
-            return {
-              ...prev,
-              currentParticipants: newCount,
-              status: newCount >= prev.minParticipants ? 'found' : 'searching',
-              isAnimating: true
-            };
-          }
-        }
-        return { ...prev, isAnimating: false };
-      });
-    }, 2000); // 2秒ごとに更新
-
-    return () => clearInterval(interval);
-  }, []);
+    if (eventData) {
+      setMatchingState(prev => ({
+        ...prev,
+        currentParticipants: eventData.capacity || 1,
+        minParticipants: eventData.mincapacity || 4,
+        status: (eventData.capacity >= (eventData.mincapacity || 4)) ? 'matched' : 'searching'
+      }));
+    }
+  }, [eventData]);
 
   // マッチング完了時の処理
   useEffect(() => {
@@ -294,7 +282,8 @@ const Recruiting: React.FC = () => {
         <Card>
           <ParticipantCounter
             currentCount={matchingState.currentParticipants}
-            targetCount={matchingState.minParticipants}
+            minCount={matchingState.minParticipants}
+            maxCount={eventData.maxcapacity || 6}
             isAnimating={matchingState.isAnimating}
           />
         </Card>

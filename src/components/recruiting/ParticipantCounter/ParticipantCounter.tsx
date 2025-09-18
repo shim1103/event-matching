@@ -3,22 +3,24 @@ import { COLORS } from '../../../utils/constants';
 
 interface ParticipantCounterProps {
   currentCount: number;
-  targetCount: number;
+  minCount: number;
+  maxCount: number;
   isAnimating?: boolean;
 }
 
 const ParticipantCounter: React.FC<ParticipantCounterProps> = ({
   currentCount,
-  targetCount,
+  minCount,
+  maxCount,
   isAnimating = false
 }) => {
-  const progressPercentage = (currentCount / targetCount) * 100;
+  const progressPercentage = (currentCount / minCount) * 100;
 
   return (
     <div className="text-center space-y-4">
       {/* 参加者アイコン表示 */}
       <div className="flex justify-center space-x-2">
-        {Array.from({ length: targetCount }).map((_, index) => (
+        {Array.from({ length: maxCount }).map((_, index) => (
           <div
             key={index}
             className={`
@@ -42,10 +44,13 @@ const ParticipantCounter: React.FC<ParticipantCounterProps> = ({
           className="text-2xl font-bold"
           style={{ color: COLORS.PRIMARY }}
         >
-          {currentCount} / {targetCount}
+          {currentCount}人参加中
         </div>
         <div className="text-sm text-gray-500">
-          参加者が集まりました
+          開始まであと{Math.max(0, minCount - currentCount)}人
+        </div>
+        <div className="text-xs text-gray-400">
+          最大{maxCount}人まで
         </div>
       </div>
 
