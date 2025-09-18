@@ -9,6 +9,7 @@ export const apiCall = async <T>(
 ): Promise<T> => {
     const apiUrl = baseUrl || BASE_URL.CALENDAR_LIST; // デフォルトはカレンダー一覧のURL
     const url = `${apiUrl}${endpoint}`;
+    console.log('body', body);
 
     try {
         console.log('url', url);
@@ -25,7 +26,10 @@ export const apiCall = async <T>(
         console.log('response headers:', response.headers);
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            // エラーレスポンスの詳細を取得
+            const errorText = await response.text();
+            console.error('Error response body:', errorText);
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
         }
 
         // レスポンスの内容を確認

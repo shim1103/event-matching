@@ -18,6 +18,8 @@ const MatchingStatus: React.FC<MatchingStatusProps> = ({
   status,
   hobbies = []
 }) => {
+  console.log('MatchingStatus eventData', eventData);
+
   // アクティビティ名を取得する関数
   const getActivityName = (hobbyId: string): string => {
     const hobby = hobbies.find(h => h.hobbyId === hobbyId);

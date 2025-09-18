@@ -12,10 +12,8 @@ import { Hobby } from '../../services/api/dto/getHobbyListApi-dto';
 import userCalendarsData from '../../dummydata/user_calendars.json';
 import groupsData from '../../dummydata/groups.json';
 
-// 型定義をファイル内に移動
-interface EventData extends CalendarDetailResponse {
-  // UI表示用の追加プロパティ（削除）
-}
+// 型定義をCalendarDetailResponseに合わせる
+type EventData = CalendarDetailResponse;
 
 interface MatchingState {
   currentParticipants: number;
@@ -83,7 +81,19 @@ const Recruiting: React.FC = () => {
         console.log('calendarDetail', calendarDetail);
         
         // カレンダー詳細データをeventDataとして設定
-        setEventData(calendarDetail);
+        setEventData({
+          userId: calendarDetail.userId,
+          hobbyId: calendarDetail.hobbyId,
+          date: calendarDetail.date,
+          timeSlot: calendarDetail.timeSlot,
+          intensity: calendarDetail.intensity,
+          mincapacity: calendarDetail.mincapacity,
+          maxcapacity: calendarDetail.maxcapacity,
+          attendees: calendarDetail.attendees,
+          status: calendarDetail.status,
+          shops: calendarDetail.shops
+        });
+        console.log('eventData set calendarDetail', eventData);
 
       } catch (err) {
         console.error('カレンダーデータの取得に失敗しました:', err);
@@ -102,7 +112,7 @@ const Recruiting: React.FC = () => {
             intensity: dummyCalendar.intensity as "casual" | "serious",
             mincapacity: 2,
             maxcapacity: 6,
-            capacity: dummyCalendar.attendees,
+            attendees: dummyCalendar.attendees,
             status: dummyCalendar.status as "recruiting" | "matched" | "closed" | null,
             shops: [{
               name: dummyGroup.location,
@@ -128,7 +138,7 @@ const Recruiting: React.FC = () => {
 
   // マッチング状態管理
   const [matchingState, setMatchingState] = useState<MatchingState>({
-    currentParticipants: eventData?.capacity || 1, // 実際の参加者数を使用
+    currentParticipants: eventData?.attendees || 1, // 実際の参加者数を使用
     minParticipants: eventData?.mincapacity || 4,
     status: 'searching',
     isAnimating: false
@@ -139,9 +149,9 @@ const Recruiting: React.FC = () => {
     if (eventData) {
       setMatchingState(prev => ({
         ...prev,
-        currentParticipants: eventData.capacity || 1,
+        currentParticipants: eventData.attendees || 1,
         minParticipants: eventData.mincapacity || 4,
-        status: (eventData.capacity >= (eventData.mincapacity || 4)) ? 'matched' : 'searching'
+        status: (eventData.attendees >= (eventData.mincapacity || 4)) ? 'matched' : 'searching'
       }));
     }
   }, [eventData]);

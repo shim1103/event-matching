@@ -11,7 +11,7 @@ interface CalendarDetailResponse {
     intensity: "serious" | "casual";
     mincapacity: number;
     maxcapacity: number;
-    capacity: number;
+    attendees: number;
     status: "recruiting" | "matched" | "closed" | null;
     shops: Shop[];
 }

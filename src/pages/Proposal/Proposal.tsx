@@ -58,14 +58,14 @@ const Proposal: React.FC = () => {
           intensity: calendarDetail.intensity,
           mincapacity: calendarDetail.mincapacity,
           maxcapacity: calendarDetail.maxcapacity,
-          attendees: calendarDetail.capacity,
+          attendees: calendarDetail.attendees,
           status: calendarDetail.status,
           shops: calendarDetail.shops
         });
 
         // マッチング結果を設定
         setMatchingResult({
-          currentParticipants: calendarDetail.capacity || 0,
+          currentParticipants: calendarDetail.attendees || 0,
           maxParticipants: calendarDetail.maxcapacity || 10
         });
 

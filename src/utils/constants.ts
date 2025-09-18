@@ -68,5 +68,5 @@ export const BASE_URL = {
   CALENDAR_DETAIL: 'https://uh7j650u2c.execute-api.ap-northeast-1.amazonaws.com',
   CALENDAR_LIST: 'https://26os9pzfpb.execute-api.ap-northeast-1.amazonaws.com',
   HOBBY_LIST: 'https://4rcfyrocda.execute-api.ap-northeast-1.amazonaws.com',
-  REGISTER_CALENDAR: 'https://a43o1kucik.execute-api.ap-northeast-1.amazonaws.com/',
+  REGISTER_CALENDAR: 'https://a43o1kucik.execute-api.ap-northeast-1.amazonaws.com',
 } as const;

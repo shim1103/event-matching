@@ -11,7 +11,7 @@ const ENDPOINTS = {
         // 9.特定のカレンダー詳細を取得
         GET_CALENDAR_DETAIL: (userId: string, calendarId: string) => `/users/${userId}/calendars/${calendarId}`,
         // 16.カレンダーを登録
-        REGISTER_CALENDAR: (userId: string) => `/users/${userId}/calendars`,
+        REGISTER_CALENDAR:  `/forms`,
         // 19.ユーザーのカレンダー一覧を取得
         GET_USER_CALENDARS: (userId: string) => `/users/${userId}/calendars`,
     },
@@ -24,7 +24,7 @@ const ENDPOINTS = {
 // カレンダー登録
 export const registerCalendar = async (userId: string, calendar: RegisterCalendar): Promise<RegisterCalendarResponse> => {
     return apiCall<RegisterCalendarResponse>(
-        ENDPOINTS.CALENDARS.REGISTER_CALENDAR(userId),
+        ENDPOINTS.CALENDARS.REGISTER_CALENDAR,
         'POST',
         calendar,
         BASE_URL.REGISTER_CALENDAR

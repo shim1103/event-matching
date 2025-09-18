@@ -15,6 +15,7 @@ const ParticipantCounter: React.FC<ParticipantCounterProps> = ({
   isAnimating = false
 }) => {
   const progressPercentage = (currentCount / minCount) * 100;
+  console.log('ParticipantCounter progressPercentage', progressPercentage);
 
   return (
     <div className="text-center space-y-4">
