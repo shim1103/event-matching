@@ -100,78 +100,68 @@ const EventSummary: React.FC<EventSummaryProps> = ({
   };
 
   return (
-    <div className="space-y-4">
-      {/* タイトル */}
-      <div className="text-center">
-        <h2
-          className="text-xl font-bold"
-          style={{ color: COLORS.PRIMARY }}
-        >
-          イベント詳細
-        </h2>
-      </div>
-
+    <div className="space-y-2">
       {/* イベント情報 */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">{getActivityEmoji(eventData.hobbyId)}</span>
+      <div className="">
+        <div className="flex items-center justify-between p-1 bg-gray-50 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <span className="text-lg">{getActivityEmoji(eventData.hobbyId)}</span>
             <div>
-              <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+              <div className="font-semibold text-sm" style={{ color: COLORS.TEXT }}>
                 {getActivityName(eventData.hobbyId)}
               </div>
-              <div className="text-sm text-gray-500">アクティビティ</div>
+              <div className="text-xs text-gray-500">アクティビティ</div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">{getIntensityEmoji(eventData.intensity)}</span>
+        <div className="flex items-center justify-between p-1 bg-gray-50 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <span className="text-lg">{getIntensityEmoji(eventData.intensity)}</span>
             <div>
-              <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+              <div className="font-semibold text-sm" style={{ color: COLORS.TEXT }}>
                 {getIntensityName(eventData.intensity)}
               </div>
-              <div className="text-sm text-gray-500">楽しみ方</div>
+              <div className="text-xs text-gray-500">楽しみ方</div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">📅</span>
+        <div className="flex items-center justify-between p-1 bg-gray-50 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <span className="text-lg">📅</span>
             <div>
-              <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+              <div className="font-semibold text-sm" style={{ color: COLORS.TEXT }}>
                 {eventData.date}
               </div>
-              <div className="text-sm text-gray-500">開催日</div>
+              <div className="text-xs text-gray-500">開催日</div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">🕐</span>
+        <div className="flex items-center justify-between p-1 bg-gray-50 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <span className="text-lg">🕐</span>
             <div>
-              <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+              <div className="font-semibold text-sm" style={{ color: COLORS.TEXT }}>
                 {getTimeSlotName(eventData.timeSlot)}
               </div>
-              <div className="text-sm text-gray-500">時間帯</div>
+              <div className="text-xs text-gray-500">時間帯</div>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">👥</span>
+        <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+          <div className="flex items-center space-x-2">
+            <span className="text-lg">👥</span>
             <div>
-              <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+              <div className="font-semibold text-sm" style={{ color: COLORS.TEXT }}>
                 {eventData.count}人参加予定
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-xs text-gray-500">
                 （{eventData.attendees}人あなたのグループ）
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-xs text-gray-500">
                 定員: {eventData.mincapacity}〜{eventData.maxcapacity}人
               </div>
             </div>
@@ -200,10 +190,10 @@ const EventSummary: React.FC<EventSummaryProps> = ({
             {eventData.shops.map((shop) => {
               return <div className="space-y-1">
                 <div>
-                  <div className="font-semibold" style={{ color: COLORS.TEXT }}>
+                  <div className="font-semibold text-sm" style={{ color: COLORS.TEXT }}>
                     {shop.name}
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-xs text-gray-500">
                     {shop.address}
                   </div>
                 </div>

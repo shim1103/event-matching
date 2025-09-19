@@ -124,7 +124,7 @@ const Calendar: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendar
         }
         
         .react-calendar__tile--now {
-          background: linear-gradient(135deg, #fb923c 0%, #f97316 100%) !important;
+          background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
           color: white !important;
           font-weight: bold;
           border: none !important;
@@ -132,7 +132,7 @@ const Calendar: React.FC<CalendarComponentProps> = ({ onDateSelect, userCalendar
         
         .react-calendar__tile--now:enabled:hover,
         .react-calendar__tile--now:enabled:focus {
-          background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+          background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
           border: none !important;
         }
         

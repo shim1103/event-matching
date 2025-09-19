@@ -213,7 +213,7 @@ const Recruiting: React.FC = () => {
       return (
         <div
           key={index}
-          className={`w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold text-lg ${bgColor} ${
+          className={`ml-3 w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-lg ${bgColor} ${
             slotType === 'searching' ? 'animate-pulse' : ''
           }`}
         >
@@ -330,7 +330,7 @@ const Recruiting: React.FC = () => {
             </div>
 
             {/* 凡例 */}
-            <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="grid grid-cols-2 gap-2 text-xs ml-3">
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 bg-red-400 rounded"></div>
                 <span>あなたのグループ</span>
@@ -373,7 +373,7 @@ const Recruiting: React.FC = () => {
           <div>
             <button
               onClick={() => navigate('/dashboard')}
-              className="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-3 rounded-xl font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
             >
               戻る
             </button>

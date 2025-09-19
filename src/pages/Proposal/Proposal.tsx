@@ -117,7 +117,7 @@ const Proposal: React.FC = () => {
       }
     };
 
-    if(userId) {
+    if (userId) {
       fetchCalendarDetail();
     }
   }, [calendarId, userId]);
@@ -171,38 +171,38 @@ const Proposal: React.FC = () => {
   }
 
   return (
-      <div className="min-h-screen p-2">
-        <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-4 border-2" style={{ borderColor: '#ef4444' }}>
-          <div className="mb-4">
-            <div className="flex items-center space-x-3 mb-4">
-              <div 
-                className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
-                style={{ 
-                  background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
-                }}
-              >
-                <span className="text-white font-bold text-sm">💡</span>
-              </div>
-              <h2 className="text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">アプリからの提案</h2>
+    <div className="min-h-screen p-2">
+      <div className="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-3 border-2" style={{ borderColor: '#ef4444' }}>
+        <div className="mb-4">
+          <div className="flex items-center space-x-3 mb-4">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center shadow-md"
+              style={{
+                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+              }}
+            >
+              <span className="text-white font-bold text-sm">💡</span>
             </div>
-            <p className="text-sm text-gray-600 mb-4 px-2 py-1 bg-gradient-to-r from-red-50 to-red-100 rounded-lg border border-red-200">
-              ✨ あなたにぴったりの場所を見つけました！
-            </p>
+            <h2 className="text-lg font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">イベント詳細</h2>
+          </div>
+          <p className="text-sm text-gray-600 mb-1 px-2 py-1 bg-gradient-to-r from-red-50 to-red-100 rounded-lg border border-red-200">
+            マッチング成功！
+          </p>
 
-            <form className="space-y-3">
-              {/* イベントサマリー */}
-              <div>
-                <EventSummary
-                  eventData={{
-                    ...eventData,
-                    date: formatEventDate(eventData.date)
-                  }}
-                  participantCount={eventData.count}
-                />
-              </div>
+          <form className="space-y-2">
+            {/* イベントサマリー */}
+            <div>
+              <EventSummary
+                eventData={{
+                  ...eventData,
+                  date: formatEventDate(eventData.date)
+                }}
+                participantCount={eventData.count}
+              />
+            </div>
 
-              {/* 会場リスト */}
-              {/* {allVenues.length > 0 && (
+            {/* 会場リスト */}
+            {/* {allVenues.length > 0 && (
                 <div>
                   <h3 className="text-xs font-semibold mb-1">📍 会場リスト</h3>
                   <div className="space-y-1">
@@ -217,26 +217,26 @@ const Proposal: React.FC = () => {
                 </div>
               )} */}
 
-              {/* 選択された場所の表示 */}
-              {selectedVenue && (
-                <div>
-                  <div className="border-2 border-red-500 rounded-lg p-2 text-center bg-red-50">
-                    <div className="text-xs font-medium text-red-600 mb-1">
-                      選択中の場所
-                    </div>
-                    <div className="text-sm font-semibold text-gray-700">
-                      {selectedVenue.name}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      {selectedVenue.address}
-                    </div>
+            {/* 選択された場所の表示 */}
+            {selectedVenue && (
+              <div>
+                <div className="border-2 border-red-500 rounded-lg p-2 text-center bg-red-50">
+                  <div className="text-xs font-medium text-red-600 mb-1">
+                    選択中の場所
+                  </div>
+                  <div className="text-sm font-semibold text-gray-700">
+                    {selectedVenue.name}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {selectedVenue.address}
                   </div>
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* アクションボタン */}
-              <div className="space-y-1">
-                {/* <button
+            {/* アクションボタン */}
+            <div className="space-y-1">
+              {/* <button
                   // onClick={handleParticipate}
                   type="button"
                   className="w-full bg-red-600 text-white py-2 rounded-lg font-semibold text-xs hover:bg-red-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
@@ -245,36 +245,36 @@ const Proposal: React.FC = () => {
                   参加する
                 </button> */}
 
-                <button
-                  type="button"
-                  onClick={() => navigate('/dashboard')}
-                  className="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
-                >
-                  戻る
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => navigate('/dashboard')}
+                className="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+              >
+                戻る
+              </button>
+            </div>
 
-              {/* 注意事項 */}
-              <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-3 border border-red-200">
-                <div className="text-xs text-red-800 space-y-1">
-                  <p className="flex items-center space-x-1">
-                    <span>⚠️</span>
-                    <span>参加確定後のキャンセルはできません</span>
-                  </p>
-                  <p className="flex items-center space-x-1">
-                    <span>📍</span>
-                    <span>場所の予約は各自で行ってください</span>
-                  </p>
-                  <p className="flex items-center space-x-1">
-                    <span>📞</span>
-                    <span>当日の連絡先は後日お知らせします</span>
-                  </p>
-                </div>
+            {/* 注意事項 */}
+            <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-3 border border-red-200">
+              <div className="text-xs text-red-800 space-y-1">
+                <p className="flex items-center space-x-1">
+                  <span>⚠️</span>
+                  <span>参加確定後のキャンセルはできません</span>
+                </p>
+                <p className="flex items-center space-x-1">
+                  <span>📍</span>
+                  <span>場所の予約は各自で行ってください</span>
+                </p>
+                <p className="flex items-center space-x-1">
+                  <span>📞</span>
+                  <span>当日の連絡先は後日お知らせします</span>
+                </p>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
+    </div>
   );
 };
 
