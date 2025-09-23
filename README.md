@@ -3,59 +3,25 @@
 ## 📋 プロジェクト概要
 ユーザーがカレンダーから日付と希望のイベント内容を登録するだけで、システムが最適なグループを自動でマッチングし、イベントを提案する「おまかせ」ソーシャルマッチングアプリ。
 
+## 🏆 開発背景
+**NTTドコモ夏ハッカソン第2タームBチーム「Synergy Sparks -「相乗効果のひらめき」」**  
+開発期間: 2024年8月16日-19日
+
+### ⚠️ 重要な制約事項
+- **バックエンドリソース**: AWS上で保存されているが、NTTドコモのリソースを使用
+- **リソース有効期限**: まもなく失効予定
+- **データ保持**: バックエンドコードとデータは一時的なものとして開発
+
 ## 🗃️ データベース構造
 
-### ユーザ情報（users）
-| カラム名 | 型 | 説明 |
-|---------|----|----|
-| id | int | ユーザID（主キー） |
-| name | varchar | ユーザー名 |
-| phone_number | varchar | 電話番号 |
-| email | varchar | メールアドレス |
-| address | varchar | 住所 |
-| bio | text | 自己紹介 |
+詳細なデータベース設計については、[`docs/database-schemas/dynamodb-tables.md`](./docs/database-schemas/dynamodb-tables.md)を参照してください。
 
-### ユーザのカレンダー（user_calendars）
-| カラム名 | 型 | 説明 |
-|---------|----|----|
-| id | int | カレンダーID（主キー） |
-| user_id | int | ユーザID（外部キー） |
-| hobby_id | int | 趣味ID（外部キー） |
-| group_id | int | グループID（外部キー） |
-| date | date | 日付 |
-| time_slot | enum | 時間帯（morning, afternoon, evening） |
-| intensity | enum | 参加レベル（serious, casual） |
-| attendees | int | 参加者数 |
-| status | enum | ステータス（recruiting, matched） |
-
-### マッチング趣味カテゴリー（hobbies）
-| カラム名 | 型 | 説明 |
-|---------|----|----|
-| id | int | 趣味ID（主キー） |
-| name | varchar | 趣味名 |
-| max_capacity | int | 最大定員 |
-| min_capacity | int | 最小定員 |
-
-### マッチンググループ（groups）
-| カラム名 | 型 | 説明 |
-|---------|----|----|
-| id | int | グループID（主キー） |
-| hobby_id | int | 趣味ID（外部キー） |
-| date | date | 日付 |
-| time_slot | enum | 時間帯（morning, afternoon, evening） |
-| intensity | enum | 参加レベル（serious, casual） |
-| count | int | 現在の人数 |
-| status | enum | ステータス（recruiting, matched） |
-| shops | json | 店舗リスト |
-
-### グループチャット（group_chat）
-| カラム名 | 型 | 説明 |
-|---------|----|----|
-| id | int | チャットID（主キー） |
-| group_id | int | グループID（外部キー） |
-| user_id | int | ユーザID（外部キー） |
-| timestamp | datetime | タイムスタンプ |
-| message | text | メッセージ内容 |
+### 主要テーブル
+- **users** - ユーザー情報
+- **user_calendars** - ユーザーカレンダー
+- **hobbies** - 趣味カテゴリー
+- **groups** - マッチンググループ
+- **group_chat** - グループチャット
 
 ## 🏗️ システム構成図
 ![システム構成図](./docs/system-architecture.png)
@@ -113,19 +79,23 @@
 ## 🛠️ 技術スタック
 
 ### フロントエンド
-- **Framework**: React 18 + TypeScript
+- **Framework**: React 19 + TypeScript
 - **Styling**: Tailwind CSS
-- **Routing**: React Router DOM
-- **State Management**: React Context API
-- **Date Handling**: date-fns
+- **Routing**: React Router DOM v7
+- **State Management**: React Query (TanStack Query)
+- **Authentication**: AWS Amplify UI React
+- **Date Handling**: date-fns, react-calendar, react-date-picker
 - **HTTP Client**: Fetch API
-- **Calendar**: react-calendar
+- **Icons**: React Icons
+- **Testing**: React Testing Library, Jest
 
 ### バックエンド (AWS)
+- **Authentication**: AWS Amplify Auth
 - **API**: API Gateway + Lambda
-- **Database**: RDS (PostgreSQL)
+- **Database**: DynamoDB
 - **Storage**: S3
 - **CDN**: CloudFront
+- **Hosting**: AWS Amplify Hosting
 
 ## 🚀 セットアップ
 
@@ -154,56 +124,90 @@ REACT_APP_API_BASE_URL=https://your-api-gateway-url
 REACT_APP_AWS_REGION=ap-northeast-1
 ```
 
+### AWS Amplify設定
+このプロジェクトはAWS Amplifyを使用しており、以下の設定ファイルが含まれています：
+- `amplifyconfiguration.json`: Amplify設定
+- `aws-exports.js`: AWS設定のエクスポート
+- `amplify/`: Amplifyバックエンド設定
+
+### AWS バックエンド詳細
+AWS側のバックエンド実装詳細については、[`docs/aws-backend-notes.md`](./docs/aws-backend-notes.md)を参照してください。
+- アーキテクチャ構成
+- API エンドポイント仕様
+- DynamoDB テーブル設計
+- Lambda関数実装詳細
+
 ## 📂 ディレクトリ構造
 
 ```
 src/
 ├── components/          # 再利用可能なUIコンポーネント
-│   ├── Calendar.tsx    # カレンダーコンポーネント
-│   ├── common/         # 汎用コンポーネント
+│   ├── calendar/        # カレンダーコンポーネント
+│   │   └── Calendar.tsx
+│   ├── common/          # 汎用コンポーネント
 │   │   ├── Button/
+│   │   │   ├── Button.tsx
+│   │   │   └── index.ts
 │   │   ├── Card/
+│   │   │   ├── Card.tsx
+│   │   │   └── index.ts
 │   │   ├── Header/
+│   │   │   ├── Header.tsx
+│   │   │   └── index.ts
 │   │   └── Layout/
-│   ├── event/          # イベント関連コンポーネント
-│   │   ├── EventCard/
+│   │       ├── Layout.tsx
+│   │       └── index.ts
+│   ├── event/           # イベント関連コンポーネント
 │   │   └── EventSummary/
-│   ├── recruiting/     # 募集関連コンポーネント
+│   │       ├── EventSummary.tsx
+│   │       └── index.ts
+│   ├── LoadingScreen/   # ローディング画面
+│   │   └── LoadingScreen.tsx
+│   ├── recruiting/      # 募集関連コンポーネント
 │   │   ├── MatchingStatus/
+│   │   │   ├── MatchingStatus.tsx
+│   │   │   └── index.ts
 │   │   └── ParticipantCounter/
-│   └── venue/          # 場所関連コンポーネント
-│       ├── VenueCard/
-│       ├── VenueList/
-│       └── VenueSearch/
-├── pages/              # ページコンポーネント
-│   ├── dashboard/      # ダッシュボード（カレンダー）
-│   ├── register/       # 予定登録
-│   ├── Recruiting/     # 募集中
-│   ├── Matching/       # マッチング中
-│   ├── Proposal/       # アプリ提案
-│   └── Profile/        # プロフィール
-├── hooks/              # カスタムフック
-├── services/           # API通信・外部サービス
+│   │       ├── ParticipantCounter.tsx
+│   │       └── index.ts
+│   └── venue/           # 場所関連コンポーネント
+│       └── VenueCard/
+│           ├── VenueCard.tsx
+│           └── index.ts
+├── pages/               # ページコンポーネント
+│   ├── dashboard/       # ダッシュボード（カレンダー）
+│   │   └── Dashboard.tsx
+│   ├── register/        # 予定登録
+│   │   └── Register.tsx
+│   ├── Recruiting/      # 募集中
+│   │   ├── Recruiting.tsx
+│   │   └── index.ts
+│   └── Proposal/        # アプリ提案
+│       ├── Proposal.tsx
+│       └── index.ts
+├── services/            # API通信・外部サービス
 │   └── api/
-│       ├── api.ts      # API設定
+│       ├── api.ts       # API設定
 │       ├── calendarApi.ts # カレンダーAPI
-│       ├── client.ts   # HTTPクライアント
-│       └── dto/        # 型定義（Data Transfer Object）
+│       ├── client.ts    # HTTPクライアント
+│       └── dto/         # 型定義（Data Transfer Object）
 │           ├── getCalendarDetailApi-dto.ts
 │           ├── getCalendarListApi-dto.ts
-│           └── registerCalendarApi-dto.ts
-├── dummydata/          # ダミーデータ
+│           ├── getHobbyListApi-dto.ts
+│           ├── registerCalendarApi-dto.ts
+│           └── registerUserApi-dto.ts
+├── dummydata/           # ダミーデータ
 │   ├── groupchat.json
 │   ├── groups.json
 │   ├── hobbies.json
 │   ├── user_calendars.json
 │   ├── users.json
 │   └── venues.json
-├── store/              # 状態管理
-│   └── {contexts}/
-├── styles/             # スタイル関連
-└── utils/              # ユーティリティ関数
-    └── constants.ts
+├── utils/               # ユーティリティ関数
+│   └── constants.ts
+├── App.tsx              # メインアプリケーション
+├── router.tsx           # ルーティング設定
+└── index.tsx            # エントリーポイント
 ```
 
 ## 🔌 API仕様 & 型定義
@@ -213,61 +217,15 @@ src/
 - **API レスポンス・リクエストの型は DTO (Data Transfer Object) として管理**
 - **ページコンポーネント内での型の重複定義を避ける**
 
-### 現在の型定義ファイル
-
-#### 1. カレンダー登録 (`registerCalendarApi-dto.ts`)
-```typescript
-interface RegisterCalendar {
-    hobbyId: string;
-    userId: string;
-    date: string;
-    timeSlot: string;
-    intensity: "serious" | "casual";
-    attendees: number;
-    status: "recruiting" | "matched" | "closed" | null;
-}
-
-interface RegisterCalendarResponse {
-    calendarId: string;
-}
-```
-
-#### 2. カレンダー詳細取得 (`getCalendarDetailApi-dto.ts`)
-#### 3. カレンダー一覧取得 (`getCalendarListApi-dto.ts`)
-
-### Base URL
-```
-Production: https://api.event-matching.com
-Development: http://localhost:3001
-```
+### API詳細
+詳細なAPI仕様については、[`docs/aws-backend-notes.md`](./docs/aws-backend-notes.md)を参照してください。
 
 ### 主要エンドポイント
-
-#### 1. カレンダー登録
-```http
-POST /api/calendar/register
-Content-Type: application/json
-
-{
-  "hobbyId": 1,
-  "userId": 1,
-  "date": "2024-12-25",
-  "timeSlot": "afternoon",
-  "intensity": "casual",
-  "attendees": 2,
-  "status": "recruiting"
-}
-```
-
-#### 2. カレンダー一覧取得
-```http
-GET /api/calendar/list?userId={userId}
-```
-
-#### 3. カレンダー詳細取得
-```http
-GET /api/calendar/detail/{calendarId}
-```
+- `GET /api/hobbies/list` - 趣味一覧取得
+- `POST /api/users/register` - ユーザー登録・取得
+- `POST /api/calendar/register` - カレンダー予定登録
+- `GET /api/calendar/detail/{userId}/{calendarId}` - カレンダー詳細取得
+- `GET /api/calendar/list/{userId}` - カレンダー一覧取得
 
 ## 🧪 テスト
 
@@ -317,29 +275,28 @@ test: テスト追加・修正
 
 ### 実装済み機能
 - [x] プロジェクト初期化
+- [x] AWS Amplify認証システム
 - [x] 基本コンポーネント (Button, Card, Layout等)
 - [x] カレンダーコンポーネント
 - [x] ダッシュボード画面
 - [x] 予定登録画面
 - [x] 募集中画面
-- [x] マッチング中画面
 - [x] 提案画面
+- [x] ローディング画面
+- [x] レスポンシブデザイン
 
-### 型定義の課題
-以下の型定義に関する問題があります：
+### 現在の実装状況
+- **認証**: AWS Amplify UI Reactを使用した認証システム
+- **ルーティング**: React Router DOM v7による画面遷移
+- **状態管理**: React Query (TanStack Query)によるAPI状態管理
+- **スタイリング**: Tailwind CSSによるレスポンシブデザイン
+- **型安全性**: TypeScriptによる型定義の管理
 
-1. **intensity値の不整合**
-   - DTO: `"serious" | "casual"`
-   - 実装: `"エンジョイ" | "ガチ"`
-
-2. **複数ファイルでの型重複**
-   - `EventData`型が複数のページで重複定義
-   - `MatchingState`型がローカル定義されている
-
-3. **不足している型定義**
-   - 会場情報 (Venue)
-   - ユーザー情報 (User)
-   - マッチング結果 (MatchingResult)
+### 今後の課題
+1. **バックエンド連携**: 現在はダミーデータを使用
+2. **型定義の統一**: 一部の型定義で不整合がある可能性
+3. **テストカバレッジ**: ユニットテストの追加
+4. **パフォーマンス最適化**: 必要に応じた最適化
 
 ## 📞 サポート・問い合わせ
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCurrentUser } from 'aws-amplify/auth';
 import { APP_CONFIG, COLORS } from '../../../utils/constants';
+import eventMatchingLogo from '../../../event-matching.svg';
 
 interface HeaderProps {
   onSettingsClick?: () => void;

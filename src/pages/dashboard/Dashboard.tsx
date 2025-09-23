@@ -17,6 +17,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const currentUserId = localStorage.getItem('userId');
+    console.log('Dashboard currentUserId', currentUserId);
     setCurrentUserId(currentUserId || '');
     if (!currentUserId) {
       navigate('/');
